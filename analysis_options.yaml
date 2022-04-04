@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    unnecessary_this: false
+    unnecessary_new: false
+    require_trailing_commas: true
+    use_key_in_widget_constructors: false
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  errors:
+    not_map_spread: ignore

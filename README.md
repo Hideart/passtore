@@ -1,2 +1,2 @@
-# passtore
-Passtore is a open-source decentralized keys manager
+# Passtore
+Passtore is an open-source decentralized keys manager
