@@ -1,5 +1,5 @@
 # See https://www.dartlang.org/guides/libraries/private-files
-*.DS_Store
+*/.DS_Store 
 .flutter-plugins-dependencies
 
 # Files and directories created by pub
