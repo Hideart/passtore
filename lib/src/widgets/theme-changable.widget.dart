@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passtore/src/services/services.dart';
-import 'package:passtore/src/store/theme.store.dart';
 
 class ThemeChangable extends StatelessWidget {
   final Widget Function(BuildContext, AppTheme) builder;

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/screens/main.screen.dart';
-import 'package:passtore/src/store/theme.store.dart';
+import 'package:passtore/src/services/services.dart';
 
 Future initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,14 +37,7 @@ void main() async {
         supportedLocales: const [Locale('en', ''), Locale('ru', '')],
         path: 'lib/assets/translations',
         fallbackLocale: const Locale('en', ''),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<ThemeCubit>(
-              create: (BuildContext context) => ThemeCubit(),
-            ),
-          ],
-          child: PasstoreApp(),
-        ),
+        child: PasstoreApp(),
       ),
     ),
     storage: storage,
