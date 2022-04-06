@@ -12,9 +12,9 @@ Future initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  // Change app orientation to the landscape mode
+  // Change app orientation to the portrait mode
   SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
   // Set translucent status bar
@@ -47,11 +47,21 @@ void main() async {
 class PasstoreApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      home: Scaffold(body: MainScreen()),
+    return FutureBuilder(
+      future: Future.delayed(Duration.zero, DI.init),
+      builder: (context, snapshot) => MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeCubit>(
+            create: (_) => DI.get<ThemeCubit>(),
+          )
+        ],
+        child: MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          home: Scaffold(body: MainScreen()),
+        ),
+      ),
     );
   }
 }
