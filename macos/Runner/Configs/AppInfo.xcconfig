@@ -11,4 +11,4 @@ PRODUCT_NAME = passtore
 PRODUCT_BUNDLE_IDENTIFIER = com.hideart.passtore
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.hideart. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 Hideart (Daniil Petrov) All rights reserved.

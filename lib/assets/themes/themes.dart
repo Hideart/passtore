@@ -1,1 +1,1 @@
-export 'default/default.theme.dart';
+export 'default.theme.dart';

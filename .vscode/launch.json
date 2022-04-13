@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "MacOS",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": ["-d", "macos"]
+    },
+    {
       "name": "Debug",
       "request": "launch",
       "type": "dart"
