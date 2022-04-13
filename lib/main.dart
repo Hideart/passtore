@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:passtore/core/utils/password-generator.util.dart';
 import 'package:passtore/core/utils/safe-storage.util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/screens/main.screen.dart';
@@ -47,8 +46,10 @@ void main() async {
 }
 
 class PasstoreApp extends StatelessWidget {
-  final SafeStorage _safeStorage = SafeStorage(passphrase: Password.generate());
-  String encData = '';
+  final SafeStorage _safeStorage = SafeStorage(passphrase: 'NoOneLikesUs1312');
+  String _encData = '';
+
+  PasstoreApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,10 @@ class PasstoreApp extends StatelessWidget {
       builder: (context, snapshot) => MultiBlocProvider(
         providers: [
           BlocProvider<ThemeCubit>(
-            create: (_) => DI.get<ThemeCubit>(),
+            create: (_) => DI.get<ThemeCubit>(instanceName: 'theme'),
+          ),
+          BlocProvider<StorageCubit>(
+            create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
           )
         ],
         child: MaterialApp(
@@ -66,26 +70,43 @@ class PasstoreApp extends StatelessWidget {
           locale: context.locale,
           home: Scaffold(
             body: MainScreen(),
-            floatingActionButton: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  key: const ValueKey('encrypt'),
-                  child: const Icon(Icons.storage),
-                  onPressed: () {
-                    this.encData = this._safeStorage.encrypt('123', 'qwerty');
-                    print('enc: $encData');
-                  },
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  key: const ValueKey('decrypt'),
-                  child: const Icon(Icons.text_decrease),
-                  onPressed: () => print(
-                    'dec: ${this._safeStorage.decrypt(this.encData, '123')}',
+            floatingActionButton:
+                BlocBuilder<StorageCubit, Map<String, String>>(
+              builder: (context, keysStorageState) => Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    key: const ValueKey('encrypt'),
+                    child: const Icon(Icons.storage),
+                    onPressed: () {
+                      this._encData = this._safeStorage.encrypt(
+                            'IKnowHowToWriteTheLargesStringInTheWorldHehe123',
+                          );
+                      StorageCubit keysStorage =
+                          DI.get<StorageCubit>(instanceName: 'safeStorage');
+                      keysStorage.save(
+                        key: this._safeStorage.encrypt('encData'),
+                        value: this._encData,
+                      );
+                      print('enc: $_encData');
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    key: const ValueKey('decrypt'),
+                    child: const Icon(Icons.text_decrease),
+                    onPressed: () {
+                      print('keysStorageState is "$keysStorageState"');
+                      final String dec = this._safeStorage.decrypt(
+                            keysStorageState[
+                                    this._safeStorage.encrypt('encData')] ??
+                                '',
+                          );
+                      print('dec: $dec');
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

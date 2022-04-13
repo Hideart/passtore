@@ -30,8 +30,10 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
   }
 
   @override
-  Map<String, String> toJson(AppTheme state) =>
-      {'currentTheme': state.name.toShortString()};
+  Map<String, String> toJson(AppTheme state) {
+    print('theme load ${state.name}');
+    return {'currentTheme': state.name.toShortString()};
+  }
 }
 
 class AppTheme {
