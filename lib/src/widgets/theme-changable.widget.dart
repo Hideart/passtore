@@ -9,10 +9,13 @@ class ThemeChangable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: BlocBuilder<ThemeCubit, AppTheme>(
-        builder: this.builder,
+    return BlocBuilder<ThemeCubit, AppTheme>(
+      builder: (context, theme) => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: Container(
+          key: ValueKey(theme.name),
+          child: this.builder(context, theme),
+        ),
       ),
     );
   }

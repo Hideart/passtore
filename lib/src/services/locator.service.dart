@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:passtore/src/services/storage.service.dart';
-import 'package:passtore/src/services/theme.service.dart';
+import 'package:passtore/src/services/services.dart';
 
 class DI {
   static final GetIt _locator = GetIt.instance;
@@ -14,6 +13,10 @@ class DI {
       StorageCubit(),
       instanceName: 'safeStorage',
     );
+    // DI._locator.registerSingleton<ModalsCubit>(
+    //   ModalsCubit(),
+    //   instanceName: 'modals',
+    // );
   }
 
   static T get<T extends Object>({String? instanceName}) {

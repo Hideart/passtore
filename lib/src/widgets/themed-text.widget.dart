@@ -8,7 +8,7 @@ class ThemedText extends StatelessWidget {
   const ThemedText(this.data, {Key? key, this.style}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextw) {
     return ThemeChangable(
       builder: (themeContext, theme) {
         final TextStyle themedStyle = TextStyle(

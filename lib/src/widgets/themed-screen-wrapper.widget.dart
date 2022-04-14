@@ -14,7 +14,7 @@ class ThemedScreenWrapper extends StatelessWidget {
       children: [
         ThemeChangable(
           builder: (themeContext, theme) => Container(
-            key: ValueKey(theme.name),
+            // key: ValueKey(theme.name),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [theme.secondaryColor, theme.primaryColor],

@@ -4,13 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:passtore/core/utils/safe-storage.util.dart';
+import 'package:passtore/assets/themes/themes.dart';
+import 'package:passtore/src/widgets/modals.widget.dart';
+import 'package:passtore/src/widgets/themed-screen-wrapper.widget.dart';
+import 'package:passtore/src/widgets/themed-text.widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/screens/main.screen.dart';
 import 'package:passtore/src/services/services.dart';
+//import 'package:flutter_services_binding/flutter_services_binding.dart';
 
 Future initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // FlutterServicesBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   // Change app orientation to the portrait mode
@@ -25,89 +30,81 @@ Future initApp() async {
 }
 
 void main() async {
-  await initApp();
+  initApp();
 
   final storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );
 
   HydratedBlocOverrides.runZoned(
-    () => runApp(
-      EasyLocalization(
-        startLocale: new Locale(Platform.localeName.split('_')[0], ''),
-        supportedLocales: const [Locale('en', ''), Locale('ru', '')],
-        path: 'lib/assets/translations',
-        fallbackLocale: const Locale('en', ''),
-        child: PasstoreApp(),
-      ),
-    ),
+    () {
+      DI.init();
+      return runApp(
+        EasyLocalization(
+          startLocale: new Locale(Platform.localeName.split('_')[0], ''),
+          supportedLocales: const [Locale('en', ''), Locale('ru', '')],
+          path: 'lib/assets/translations',
+          fallbackLocale: const Locale('en', ''),
+          child: PasstoreApp(),
+        ),
+      );
+    },
     storage: storage,
   );
 }
 
 class PasstoreApp extends StatelessWidget {
-  final SafeStorage _safeStorage = SafeStorage(passphrase: 'NoOneLikesUs1312');
-  String _encData = '';
+  // final ModalsCubit modalsState = DI.get<ModalsCubit>(instanceName: 'modals');
 
   PasstoreApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Future.delayed(Duration.zero, DI.init),
-      builder: (context, snapshot) => MultiBlocProvider(
-        providers: [
-          BlocProvider<ThemeCubit>(
-            create: (_) => DI.get<ThemeCubit>(instanceName: 'theme'),
-          ),
-          BlocProvider<StorageCubit>(
-            create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
-          )
-        ],
-        child: MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          home: Scaffold(
-            body: MainScreen(),
-            floatingActionButton:
-                BlocBuilder<StorageCubit, Map<String, String>>(
-              builder: (context, keysStorageState) => Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    key: const ValueKey('encrypt'),
-                    child: const Icon(Icons.storage),
-                    onPressed: () {
-                      this._encData = this._safeStorage.encrypt(
-                            'IKnowHowToWriteTheLargesStringInTheWorldHehe123',
-                          );
-                      StorageCubit keysStorage =
-                          DI.get<StorageCubit>(instanceName: 'safeStorage');
-                      keysStorage.save(
-                        key: this._safeStorage.encrypt('encData'),
-                        value: this._encData,
-                      );
-                      print('enc: $_encData');
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  FloatingActionButton(
-                    key: const ValueKey('decrypt'),
-                    child: const Icon(Icons.text_decrease),
-                    onPressed: () {
-                      print('keysStorageState is "$keysStorageState"');
-                      final String dec = this._safeStorage.decrypt(
-                            keysStorageState[
-                                    this._safeStorage.encrypt('encData')] ??
-                                '',
-                          );
-                      print('dec: $dec');
-                    },
-                  ),
-                ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>(
+          create: (_) => DI.get<ThemeCubit>(instanceName: 'theme'),
+        ),
+        BlocProvider<StorageCubit>(
+          create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
+        ),
+        // BlocProvider<ModalsCubit>(
+        //   create: (_) => DI.get<ModalsCubit>(instanceName: 'modals'),
+        // ),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        home: Scaffold(
+          body: MainScreen(),
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: 'modals',
+                child: const Icon(Icons.telegram),
+                onPressed: () =>
+                    DI.get<ThemeCubit>(instanceName: 'theme').changeTheme(
+                          AvailableTheme.main,
+                        ),
+                // () => modalsState.add(
+                //   const ThemedModal(
+                //     id: 'testModal',
+                //     child: Text('modal testing'),
+                //   ),
+                // ),
               ),
-            ),
+              const SizedBox(height: 10),
+              FloatingActionButton(
+                heroTag: 'themes',
+                child: const Icon(Icons.abc_rounded),
+                onPressed: () =>
+                    DI.get<ThemeCubit>(instanceName: 'theme').changeTheme(
+                          AvailableTheme.dark,
+                        ),
+              ),
+            ],
           ),
         ),
       ),
