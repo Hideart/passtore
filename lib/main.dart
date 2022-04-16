@@ -45,7 +45,7 @@ void main() async {
           supportedLocales: const [Locale('en', ''), Locale('ru', '')],
           path: 'lib/assets/translations',
           fallbackLocale: const Locale('en', ''),
-          child: PasstoreApp(),
+          child: const PasstoreApp(),
         ),
       );
     },
@@ -53,10 +53,10 @@ void main() async {
   );
 }
 
-class PasstoreApp extends StatelessWidget {
-  // final ModalsCubit modalsState = DI.get<ModalsCubit>(instanceName: 'modals');
+ModalsContainer modalsContainer = ModalsContainer();
 
-  PasstoreApp({Key? key}) : super(key: key);
+class PasstoreApp extends StatelessWidget {
+  const PasstoreApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,41 +68,55 @@ class PasstoreApp extends StatelessWidget {
         BlocProvider<StorageCubit>(
           create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
         ),
-        // BlocProvider<ModalsCubit>(
-        //   create: (_) => DI.get<ModalsCubit>(instanceName: 'modals'),
-        // ),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         home: Scaffold(
-          body: MainScreen(),
+          body: Stack(children: [MainScreen(), modalsContainer]),
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
                 heroTag: 'modals',
+                child: const Icon(Icons.window),
+                onPressed: () {
+                  if (!modalsContainer.isModalInQueue('testModal')) {
+                    modalsContainer.show(
+                      const ThemedModal(
+                        id: 'testModal',
+                        child: Text('modal testing'),
+                      ),
+                    );
+                  } else {
+                    modalsContainer.close('testModal');
+                  }
+                },
+              ),
+              const SizedBox(height: 10),
+              FloatingActionButton(
+                heroTag: 'modals',
                 child: const Icon(Icons.telegram),
-                onPressed: () =>
-                    DI.get<ThemeCubit>(instanceName: 'theme').changeTheme(
-                          AvailableTheme.main,
-                        ),
-                // () => modalsState.add(
-                //   const ThemedModal(
-                //     id: 'testModal',
-                //     child: Text('modal testing'),
-                //   ),
-                // ),
+                onPressed: () => DI
+                    .get<ThemeCubit>(
+                      instanceName: 'theme',
+                    )
+                    .changeTheme(
+                      AvailableTheme.main,
+                    ),
               ),
               const SizedBox(height: 10),
               FloatingActionButton(
                 heroTag: 'themes',
                 child: const Icon(Icons.abc_rounded),
-                onPressed: () =>
-                    DI.get<ThemeCubit>(instanceName: 'theme').changeTheme(
-                          AvailableTheme.dark,
-                        ),
+                onPressed: () => DI
+                    .get<ThemeCubit>(
+                      instanceName: 'theme',
+                    )
+                    .changeTheme(
+                      AvailableTheme.dark,
+                    ),
               ),
             ],
           ),

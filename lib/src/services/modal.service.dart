@@ -4,15 +4,15 @@ import 'package:passtore/src/widgets/modals.widget.dart';
 class ModalsCubit extends Cubit<List<ThemedModal>> {
   ModalsCubit([List<ThemedModal>? initialState]) : super(initialState ?? []);
 
-  final List<ThemedModal> _modalsQueue = [];
-
   void add(ThemedModal modal) {
-    this._modalsQueue.add(modal);
-    return emit(this._modalsQueue);
+    return emit([...this.state, modal]);
   }
 
   void remove(String id) {
-    this._modalsQueue.removeWhere((modal) => modal.id == id);
-    return emit(this._modalsQueue);
+    return emit(this.state.where((modal) => modal.id != id).toList());
+  }
+
+  bool isModalInQueue(String id) {
+    return this.state.any((modal) => modal.id == id);
   }
 }

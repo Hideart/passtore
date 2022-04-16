@@ -5,18 +5,34 @@ class DI {
   static final GetIt _locator = GetIt.instance;
 
   static void init() {
-    DI._locator.registerSingleton<ThemeCubit>(
+    DI.registerSingleton<ThemeCubit>(
       ThemeCubit(),
       instanceName: 'theme',
     );
-    DI._locator.registerSingleton<StorageCubit>(
+    DI.registerSingleton<StorageCubit>(
       StorageCubit(),
       instanceName: 'safeStorage',
     );
-    // DI._locator.registerSingleton<ModalsCubit>(
-    //   ModalsCubit(),
-    //   instanceName: 'modals',
-    // );
+  }
+
+  static void registerSingleton<T extends Object>(
+    T instance, {
+    String? instanceName,
+  }) {
+    DI._locator.registerSingleton<T>(
+      instance,
+      instanceName: instanceName,
+    );
+  }
+
+  static void registerLazySingleton<T extends Object>(
+    T Function() factoryFunc, {
+    String? instanceName,
+  }) {
+    DI._locator.registerLazySingleton<T>(
+      factoryFunc,
+      instanceName: instanceName,
+    );
   }
 
   static T get<T extends Object>({String? instanceName}) {
