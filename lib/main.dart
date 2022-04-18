@@ -45,7 +45,7 @@ void main() async {
           supportedLocales: const [Locale('en', ''), Locale('ru', '')],
           path: 'lib/assets/translations',
           fallbackLocale: const Locale('en', ''),
-          child: const PasstoreApp(),
+          child: PasstoreApp(),
         ),
       );
     },
@@ -53,10 +53,14 @@ void main() async {
   );
 }
 
-ModalsContainer modalsContainer = ModalsContainer();
-
 class PasstoreApp extends StatelessWidget {
-  const PasstoreApp({Key? key}) : super(key: key);
+  late final ModalsContainer modalsContainer;
+  PasstoreApp({Key? key}) : super(key: key) {
+    this.modalsContainer = DI.registerSingleton(
+      ModalsContainer(),
+      instanceName: 'modalsContainer',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,15 +86,15 @@ class PasstoreApp extends StatelessWidget {
                 heroTag: 'modals',
                 child: const Icon(Icons.window),
                 onPressed: () {
-                  if (!modalsContainer.isModalInQueue('testModal')) {
-                    modalsContainer.show(
-                      const ThemedModal(
-                        id: 'testModal',
-                        child: Text('modal testing'),
-                      ),
-                    );
+                  if (!this.modalsContainer.isModalInQueue('testModal')) {
+                    this.modalsContainer.show(
+                          ThemedModal(
+                            id: 'testModal',
+                            child: const Text('modal testing'),
+                          ),
+                        );
                   } else {
-                    modalsContainer.close('testModal');
+                    this.modalsContainer.close('testModal');
                   }
                 },
               ),

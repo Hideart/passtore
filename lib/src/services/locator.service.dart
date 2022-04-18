@@ -15,7 +15,7 @@ class DI {
     );
   }
 
-  static void registerSingleton<T extends Object>(
+  static T registerSingleton<T extends Object>(
     T instance, {
     String? instanceName,
   }) {
@@ -23,6 +23,7 @@ class DI {
       instance,
       instanceName: instanceName,
     );
+    return instance;
   }
 
   static void registerLazySingleton<T extends Object>(
