@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:passtore/assets/themes/themes.dart';
-import 'package:passtore/src/widgets/modals.widget.dart';
+import 'package:passtore/src/models/models.dart';
+import 'package:passtore/src/widgets/modals-container.widget.dart';
+import 'package:passtore/src/widgets/themed-modal.widget.dart';
 import 'package:passtore/src/widgets/themed-screen-wrapper.widget.dart';
 import 'package:passtore/src/widgets/themed-text.widget.dart';
 import 'package:path_provider/path_provider.dart';
@@ -54,12 +56,9 @@ void main() async {
 }
 
 class PasstoreApp extends StatelessWidget {
-  late final ModalsContainer modalsContainer;
+  late final OverlayCubit modalsCubit;
   PasstoreApp({Key? key}) : super(key: key) {
-    this.modalsContainer = DI.registerSingleton(
-      ModalsContainer(),
-      instanceName: 'modalsContainer',
-    );
+    this.modalsCubit = DI.get<OverlayCubit>(instanceName: 'overlays');
   }
 
   @override
@@ -78,7 +77,7 @@ class PasstoreApp extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         home: Scaffold(
-          body: Stack(children: [MainScreen(), modalsContainer]),
+          body: Stack(children: [MainScreen(), ModalsContainer()]),
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -86,15 +85,20 @@ class PasstoreApp extends StatelessWidget {
                 heroTag: 'modals',
                 child: const Icon(Icons.window),
                 onPressed: () {
-                  if (!this.modalsContainer.isModalInQueue('testModal')) {
-                    this.modalsContainer.show(
-                          ThemedModal(
+                  if (!this
+                      .modalsCubit
+                      .isOverlayInQueue('testModal', OverlayType.modal)) {
+                    this.modalsCubit.addOverlay(
+                          const ThemedModal(
                             id: 'testModal',
-                            child: const Text('modal testing'),
+                            child: Text('modal testing'),
+                            close: false,
                           ),
                         );
                   } else {
-                    this.modalsContainer.close('testModal');
+                    this
+                        .modalsCubit
+                        .closeOverlay('testModal', OverlayType.modal);
                   }
                 },
               ),

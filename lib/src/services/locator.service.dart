@@ -13,6 +13,10 @@ class DI {
       StorageCubit(),
       instanceName: 'safeStorage',
     );
+    DI.registerLazySingleton<OverlayCubit>(
+      () => OverlayCubit(),
+      instanceName: 'overlays',
+    );
   }
 
   static T registerSingleton<T extends Object>(
