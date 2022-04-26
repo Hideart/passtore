@@ -1,12 +1,14 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:passtore/src/models/models.dart';
+import 'package:passtore/core/models/models.dart';
 
 class OverlayCubitState<T extends CustomOverlay> {
   final List<T> overlayQueue;
   final List<T> closingQueue;
 
-  OverlayCubitState(
-      {this.overlayQueue = const [], this.closingQueue = const []});
+  OverlayCubitState({
+    this.overlayQueue = const [],
+    this.closingQueue = const [],
+  });
 }
 
 class OverlayCubit<T extends CustomOverlay>
@@ -15,12 +17,14 @@ class OverlayCubit<T extends CustomOverlay>
       : super(initialState ?? OverlayCubitState<T>());
 
   void addOverlay(T newModal) {
-    return emit(
-      OverlayCubitState(
-        overlayQueue: [...this.state.overlayQueue, newModal],
-        closingQueue: this.state.closingQueue,
-      ),
-    );
+    if (!this.isOverlayInQueue(newModal.id, newModal.type)) {
+      return emit(
+        OverlayCubitState(
+          overlayQueue: [...this.state.overlayQueue, newModal],
+          closingQueue: this.state.closingQueue,
+        ),
+      );
+    }
   }
 
   void removeOverlay(String id, OverlayType type) {
@@ -37,15 +41,22 @@ class OverlayCubit<T extends CustomOverlay>
 
   void closeOverlay(String id, OverlayType type) {
     final List<T> overlayQueue = this.state.overlayQueue;
-    final List<T> closingQueue = [
-      ...this.state.closingQueue,
-      this.state.overlayQueue.firstWhere((CustomOverlay modal) {
-        return modal.id == id && modal.type == type;
-      }),
-    ];
-    return emit(
-      OverlayCubitState(overlayQueue: overlayQueue, closingQueue: closingQueue),
-    );
+    if (overlayQueue.isNotEmpty &&
+        overlayQueue.last.id == id &&
+        overlayQueue.last.type == type) {
+      final List<T> closingQueue = [
+        ...this.state.closingQueue,
+        this.state.overlayQueue.firstWhere((CustomOverlay modal) {
+          return modal.id == id && modal.type == type;
+        }),
+      ];
+      return emit(
+        OverlayCubitState(
+          overlayQueue: overlayQueue,
+          closingQueue: closingQueue,
+        ),
+      );
+    }
   }
 
   bool isOverlayInQueue(String id, OverlayType type) {

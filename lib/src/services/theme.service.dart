@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:passtore/core/extensions/extensions.dart';
 import 'package:passtore/assets/themes/themes.dart';
+import 'package:passtore/core/models/theme.model.dart';
 
 class ThemeCubit extends HydratedCubit<AppTheme> {
   ThemeCubit([AppTheme? initialState]) : super(initialState ?? defaultTheme);
@@ -32,31 +32,5 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
   @override
   Map<String, String> toJson(AppTheme state) {
     return {'currentTheme': state.name.toShortString()};
-  }
-}
-
-class AppTheme {
-  final AvailableTheme name;
-  final Color textPrimary;
-  final Color primaryColor;
-  final Color accentColor;
-  final Color secondaryColor;
-  final Color accentSecondaryColor;
-
-  const AppTheme({
-    required this.name,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
-    required this.accentSecondaryColor,
-    required this.textPrimary,
-  });
-}
-
-enum AvailableTheme { main, dark }
-
-extension ParseToString on AvailableTheme {
-  String toShortString() {
-    return this.toString().split('.').last;
   }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:passtore/src/models/models.dart';
+import 'package:passtore/core/models/models.dart';
 import 'package:passtore/src/services/locator.service.dart';
 import 'package:passtore/src/services/modal.service.dart';
-import 'package:passtore/src/widgets/themed-modal.widget.dart';
 
 class ModalsContainer extends StatelessWidget {
   late final OverlayCubit _modalsState;
@@ -20,18 +19,14 @@ class ModalsContainer extends StatelessWidget {
         children: [
           BlocBuilder<OverlayCubit, OverlayCubitState>(
             builder: (context, overlaysState) {
-              ThemedModal? modalWidget;
               List<CustomOverlay> modalsQueue = overlaysState.overlayQueue
                   .where(
                     (overlay) => overlay.type == OverlayType.modal,
                   )
                   .toList();
-              if (modalsQueue.isNotEmpty) {
-                modalWidget =
-                    modalsQueue[modalsQueue.length - 1] as ThemedModal;
-              }
-              print('modalWidget $modalWidget');
-              return modalWidget ?? const SizedBox();
+              return modalsQueue.isNotEmpty
+                  ? modalsQueue.first
+                  : const SizedBox();
             },
           ),
         ],

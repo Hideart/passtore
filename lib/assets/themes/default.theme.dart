@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passtore/src/services/services.dart';
+import 'package:passtore/core/models/models.dart';
 
 AppTheme defaultTheme = const AppTheme(
   name: AvailableTheme.main,
@@ -7,5 +7,6 @@ AppTheme defaultTheme = const AppTheme(
   accentSecondaryColor: Color(0xFF01B59C),
   primaryColor: Color(0xFFEEEEEE),
   secondaryColor: Color(0xFFEEEEEE),
-  textPrimary: Color(0xFF252525),
+  darkBackgroundColor: Color(0xFFD3D2D2),
+  textPrimaryColor: Color(0xFF252525),
 );

@@ -4,12 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:passtore/assets/themes/themes.dart';
-import 'package:passtore/src/models/models.dart';
-import 'package:passtore/src/widgets/modals-container.widget.dart';
-import 'package:passtore/src/widgets/themed-modal.widget.dart';
-import 'package:passtore/src/widgets/themed-screen-wrapper.widget.dart';
-import 'package:passtore/src/widgets/themed-text.widget.dart';
+import 'package:passtore/core/models/models.dart';
+import 'package:passtore/src/widgets/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/screens/main.screen.dart';
 import 'package:passtore/src/services/services.dart';
@@ -85,21 +81,26 @@ class PasstoreApp extends StatelessWidget {
                 heroTag: 'modals',
                 child: const Icon(Icons.window),
                 onPressed: () {
-                  if (!this
-                      .modalsCubit
-                      .isOverlayInQueue('testModal', OverlayType.modal)) {
-                    this.modalsCubit.addOverlay(
-                          const ThemedModal(
-                            id: 'testModal',
-                            child: Text('modal testing'),
-                            close: false,
-                          ),
-                        );
-                  } else {
-                    this
-                        .modalsCubit
-                        .closeOverlay('testModal', OverlayType.modal);
-                  }
+                  this.modalsCubit.addOverlay(
+                        CustomModal(
+                          id: 'testModal',
+                          child: const Text('modal testing'),
+                          close: false,
+                        ),
+                      );
+                },
+              ),
+              FloatingActionButton(
+                heroTag: 'modals1',
+                child: const Icon(Icons.window),
+                onPressed: () {
+                  this.modalsCubit.addOverlay(
+                        CustomModal(
+                          id: 'testModal1',
+                          child: const Text('modal testing 123'),
+                          close: false,
+                        ),
+                      );
                 },
               ),
               const SizedBox(height: 10),
