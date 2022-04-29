@@ -23,8 +23,16 @@ class Password {
     double numsChance = 0.2,
   }) {
     const List<String> specials = ['@', '!', '*', '\$', '%', '&', '^'];
-    const List<String> letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    const List<String> nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    var aCode = 'a'.codeUnitAt(0);
+    var zCode = 'z'.codeUnitAt(0);
+    List<String> letters = List<String>.generate(
+      zCode - aCode + 1,
+      (index) => String.fromCharCode(aCode + index),
+    );
+    List<String> nums = List<String>.generate(
+      10,
+      (index) => index.toString(),
+    );
 
     final int specialsCount = (passLength * specialsChance).round();
     final int numsCount = (passLength * numsChance).round();

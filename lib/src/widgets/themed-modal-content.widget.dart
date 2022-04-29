@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:passtore/src/widgets/theme-changable.widget.dart';
 import 'package:passtore/core/widgets/expanded-row.widget.dart';
+import 'package:passtore/src/widgets/widgets.dart';
 
 class ThemedModalContent extends StatelessWidget {
-  final Widget child;
-  final Widget? title;
+  final Widget? child;
+  final String? title;
+  final String? message;
 
-  const ThemedModalContent({required this.child, this.title, Key? key})
+  const ThemedModalContent({this.child, this.title, this.message, Key? key})
       : super(key: key);
 
   @override
@@ -14,14 +15,45 @@ class ThemedModalContent extends StatelessWidget {
     return ThemeChangable(
       builder: (context, theme) => ExpandedRow(
         child: Container(
-          height: 100,
+          padding: const EdgeInsets.all(15),
+          constraints: const BoxConstraints(minHeight: 150),
           decoration: BoxDecoration(
             color: theme.darkBackgroundColor,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: theme.secondaryColor),
           ),
-          child: child,
-          margin: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Title
+              this.title != null
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ThemedText(
+                          this.title!,
+                          type: ThemedTextType.secondary,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
+                  : const SizedBox(),
+              // Content
+              this.child == null && this.message != null
+                  ? ThemedText(
+                      this.message!,
+                      type: ThemedTextType.primary,
+                      style: const TextStyle(fontSize: 16),
+                    )
+                  : const SizedBox(),
+              this.child != null ? this.child! : const SizedBox(),
+            ],
+          ),
         ),
       ),
     );

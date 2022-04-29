@@ -85,7 +85,6 @@ class PasstoreApp extends StatelessWidget {
                         CustomModal(
                           id: 'testModal',
                           child: const Text('modal testing'),
-                          close: false,
                         ),
                       );
                 },
@@ -97,8 +96,8 @@ class PasstoreApp extends StatelessWidget {
                   this.modalsCubit.addOverlay(
                         CustomModal(
                           id: 'testModal1',
-                          child: const Text('modal testing 123'),
-                          close: false,
+                          title: 'Test modal 1',
+                          message: 'modal testing 123',
                         ),
                       );
                 },

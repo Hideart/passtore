@@ -5,13 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passtore/core/models/models.dart';
 import 'package:passtore/src/services/locator.service.dart';
 import 'package:passtore/src/services/modal.service.dart';
-import 'package:passtore/src/widgets/themed-modal-content.widget.dart';
+import 'package:passtore/src/widgets/widgets.dart';
 
 class CustomModal extends StatefulWidget implements CustomOverlay {
   @override
   late final String id;
   @override
-  final Widget child;
+  final Widget? child;
   @override
   final CurvedAnimation? animationOut;
   @override
@@ -19,14 +19,15 @@ class CustomModal extends StatefulWidget implements CustomOverlay {
   @override
   final Function? onClose;
   @override
-  final bool close;
-  @override
   final OverlayType type = OverlayType.modal;
+  final String? title;
+  final String? message;
 
   CustomModal({
     required this.id,
-    required this.child,
-    required this.close,
+    this.child,
+    this.title,
+    this.message,
     this.animationOut,
     this.onShow,
     this.onClose,
@@ -51,7 +52,7 @@ class _CustomModalState extends State<CustomModal>
       );
   late final OverlayCubit<CustomOverlay> _modalsCubit;
   final int _backgroundFadeDuration = 150;
-  final double _blurMultiplier = 5.0;
+  final double _blurMultiplier = 10.0;
   double _opacity = 1.0;
 
   @override
@@ -125,17 +126,25 @@ class _CustomModalState extends State<CustomModal>
                     animation: this._modalAnimation,
                     builder: (context, _) => FractionalTranslation(
                       translation: Offset(0.0, 1 - this._modalAnimation.value),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ThemedModalContent(
-                            child: this.widget.child,
-                          ),
-                          InkWell(
-                            child: const Text('Close'),
-                            onTap: this.handleClose,
-                          )
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ThemedModalContent(
+                              title: this.widget.title,
+                              message: this.widget.message,
+                              child: this.widget.child,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: ThemedButton(
+                                text: 'Test button',
+                                onTap: this.handleClose,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

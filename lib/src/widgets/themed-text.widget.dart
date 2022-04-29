@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:passtore/src/widgets/theme-changable.widget.dart';
 
+enum ThemedTextType { primary, secondary }
+
 class ThemedText extends StatelessWidget {
   final String data;
   final TextStyle? style;
+  final ThemedTextType type;
 
-  const ThemedText(this.data, {Key? key, this.style}) : super(key: key);
+  const ThemedText(
+    this.data, {
+    this.type = ThemedTextType.secondary,
+    Key? key,
+    this.style,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ThemeChangable(
       builder: (themeContext, theme) {
+        Color textColor = type == ThemedTextType.primary
+            ? theme.textPrimaryColor
+            : theme.textSecondaryColor;
         final TextStyle themedStyle = TextStyle(
-          color: theme.textPrimaryColor,
-          fontSize: 24.0,
-          fontWeight: FontWeight.bold,
+          color: textColor,
+          fontSize: this.style?.fontSize ?? 24.0,
+          fontWeight: this.style?.fontWeight ?? FontWeight.normal,
           inherit: this.style?.inherit ?? true,
           backgroundColor: this.style?.backgroundColor,
           fontStyle: this.style?.fontStyle,

@@ -20,7 +20,7 @@ class Tapable extends StatefulWidget {
     this.onTapUp,
     this.onTapCancel,
     this.startAnimationDelay = const Duration(seconds: 0),
-    this.minScale = 0.8,
+    this.minScale = 0.9,
     this.maxScale = 1.0,
     required this.child,
     required this.onTap,
@@ -32,15 +32,16 @@ class Tapable extends StatefulWidget {
 
 class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   double scale = 1;
+
   bool _mounted = false;
 
   late final AnimationController _animationInController = AnimationController(
-    duration: const Duration(seconds: 1),
+    duration: const Duration(milliseconds: 300),
     vsync: this,
   );
   late final Animation<double> _animationIn = CurvedAnimation(
     parent: this._animationInController,
-    curve: this.widget.animation ?? Curves.elasticOut,
+    curve: this.widget.animation ?? Curves.fastLinearToSlowEaseIn,
   );
   late final AnimationController _tapAnimationController = AnimationController(
     vsync: this,
@@ -50,15 +51,6 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
     lowerBound: 1 - this.widget.maxScale,
     upperBound: 1 - this.widget.minScale,
   )..addListener(() {
-      switch (this._tapAnimationController.status) {
-        case AnimationStatus.dismissed:
-          this._animationInController.reset();
-          this._animationInController.forward(from: 0.1);
-          break;
-        default:
-          break;
-      }
-
       setState(() {
         this.scale = 1 - this._tapAnimationController.value;
       });
@@ -87,39 +79,40 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    this._mounted = false;
     this._animationInController.dispose();
     this._tapAnimationController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => ScaleTransition(
-        scale: this._animationIn,
-        child: Transform.scale(
-          scale: this.scale,
-          child: GestureDetector(
-            onTapDown: (details) {
-              this._tapAnimationController.forward();
-              if (this.widget.onTapDown != null) {
-                this.widget.onTapDown!(details);
-              }
-            },
-            onTapUp: (details) {
-              this._tapAnimationController.reverse();
-              if (this.widget.onTapUp != null) {
-                this.widget.onTapUp!(details);
-              }
-            },
-            onTapCancel: () {
-              this._tapAnimationController.reverse();
-              if (this.widget.onTapCancel != null) {
-                this.widget.onTapCancel!();
-              }
-            },
-            onTap: this.widget.onTap,
-            child: this.widget.child,
-          ),
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: this._animationIn,
+      child: Transform.scale(
+        scale: this.scale,
+        child: GestureDetector(
+          onTapDown: (details) {
+            this._tapAnimationController.forward();
+            if (this.widget.onTapDown != null) {
+              this.widget.onTapDown!(details);
+            }
+          },
+          onTapUp: (details) {
+            this._tapAnimationController.reverse();
+            if (this.widget.onTapUp != null) {
+              this.widget.onTapUp!(details);
+            }
+          },
+          onTapCancel: () {
+            this._tapAnimationController.reverse();
+            if (this.widget.onTapCancel != null) {
+              this.widget.onTapCancel!();
+            }
+          },
+          onTap: this.widget.onTap,
+          child: this.widget.child,
         ),
-      );
+      ),
+    );
+  }
 }

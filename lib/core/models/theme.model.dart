@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   final AvailableTheme name;
   final Color textPrimaryColor;
+  final Color textSecondaryColor;
   final Color primaryColor;
   final Color accentColor;
   final Color secondaryColor;
@@ -16,6 +17,7 @@ class AppTheme {
     required this.accentColor,
     required this.accentSecondaryColor,
     required this.textPrimaryColor,
+    required this.textSecondaryColor,
     required this.darkBackgroundColor,
   });
 }
