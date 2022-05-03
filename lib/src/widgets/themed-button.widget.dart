@@ -7,8 +7,8 @@ import 'package:passtore/core/widgets/tapable.widget.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
 class ThemedButton extends StatelessWidget {
-  final TimelineSyncFunction onTap;
   final String? text;
+  final TimelineSyncFunction onTap;
 
   const ThemedButton({required this.onTap, this.text, Key? key})
       : super(key: key);
@@ -25,14 +25,16 @@ class ThemedButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
               color: theme.accentColor,
             ),
-            child: const ThemedText(
-              'test button',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              type: ThemedTextType.primary,
-            ),
+            child: this.text != null
+                ? ThemedText(
+                    this.text!,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    type: ThemedTextType.primary,
+                  )
+                : const SizedBox(),
           ),
         ),
       ),

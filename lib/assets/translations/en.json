@@ -1,6 +1,7 @@
 {
   "APP_NAME": "Passtore",
-  "ERRORS": {
+  "ERROR": {
     "SVG": "Couldn't load resource"
-  }
+  },
+  "CLOSE": "Close"
 }

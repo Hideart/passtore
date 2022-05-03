@@ -89,6 +89,7 @@ class PasstoreApp extends StatelessWidget {
                       );
                 },
               ),
+              const SizedBox(height: 10),
               FloatingActionButton(
                 heroTag: 'modals1',
                 child: const Icon(Icons.window),

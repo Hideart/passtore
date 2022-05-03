@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passtore/assets/metrics.dart';
@@ -21,6 +22,9 @@ class CustomModal extends StatefulWidget implements CustomOverlay {
   final Function? onClose;
   @override
   final OverlayType type = OverlayType.modal;
+  final bool enableCloseButton;
+  final bool isBackgroundClosable;
+  final List<ThemedButton> buttons;
   final String? title;
   final String? message;
 
@@ -32,6 +36,9 @@ class CustomModal extends StatefulWidget implements CustomOverlay {
     this.animationOut,
     this.onShow,
     this.onClose,
+    this.enableCloseButton = true,
+    this.isBackgroundClosable = true,
+    this.buttons = const [],
   }) : super(key: ValueKey(id));
 
   @override
@@ -55,12 +62,24 @@ class _CustomModalState extends State<CustomModal>
   final int _backgroundFadeDuration = 150;
   final double _blurMultiplier = AppMetrics.blurMultiplier;
   double _opacity = 1.0;
+  late final List<ThemedButton> _buttons;
 
   @override
   void initState() {
     super.initState();
     this._modalsCubit = DI.get<OverlayCubit>(instanceName: 'overlays');
     this._modalAnimationController.forward();
+    this._buttons = [
+      ...this.widget.buttons,
+      ...(this.widget.enableCloseButton
+          ? [
+              ThemedButton(
+                text: 'CLOSE'.tr(),
+                onTap: this.handleClose,
+              ),
+            ]
+          : [])
+    ];
   }
 
   @override
@@ -102,18 +121,23 @@ class _CustomModalState extends State<CustomModal>
             children: [
               // Modal background
               Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: opacity * this._blurMultiplier,
-                    sigmaY: opacity * this._blurMultiplier,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(
-                        0,
-                        0,
-                        0,
-                        opacity - 0.4 < 0.0 ? 0.0 : opacity - 0.4,
+                child: GestureDetector(
+                  onTap: this.widget.isBackgroundClosable
+                      ? this.handleClose
+                      : null,
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: opacity * this._blurMultiplier,
+                      sigmaY: opacity * this._blurMultiplier,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(
+                          0,
+                          0,
+                          0,
+                          opacity - 0.4 < 0.0 ? 0.0 : opacity - 0.4,
+                        ),
                       ),
                     ),
                   ),
@@ -137,15 +161,17 @@ class _CustomModalState extends State<CustomModal>
                               message: this.widget.message,
                               child: this.widget.child,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: AppMetrics.defaultMargin,
-                              ),
-                              child: ThemedButton(
-                                text: 'Test button',
-                                onTap: this.handleClose,
-                              ),
-                            ),
+                            ...this
+                                ._buttons
+                                .map(
+                                  (btn) => Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: AppMetrics.defaultMargin,
+                                    ),
+                                    child: btn,
+                                  ),
+                                )
+                                .toList(),
                           ],
                         ),
                       ),

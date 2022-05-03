@@ -45,6 +45,7 @@ class ThemedText extends StatelessWidget {
           decorationThickness: this.style?.decorationThickness,
           debugLabel: this.style?.debugLabel,
           overflow: this.style?.overflow,
+          fontFamily: 'CenturyGothic',
         );
         return Text(
           this.data,
