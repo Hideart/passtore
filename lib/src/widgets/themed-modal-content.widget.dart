@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/widgets/expanded-row.widget.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
@@ -15,11 +16,11 @@ class ThemedModalContent extends StatelessWidget {
     return ThemeChangable(
       builder: (context, theme) => ExpandedRow(
         child: Container(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppMetrics.defaultMargin),
           constraints: const BoxConstraints(minHeight: 150),
           decoration: BoxDecoration(
             color: theme.darkBackgroundColor,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
             border: Border.all(color: theme.secondaryColor),
           ),
           child: Column(
@@ -32,12 +33,17 @@ class ThemedModalContent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        ThemedText(
-                          this.title!,
-                          type: ThemedTextType.secondary,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: AppMetrics.defaultMargin,
+                          ),
+                          child: ThemedText(
+                            this.title!,
+                            type: ThemedTextType.secondary,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         )
                       ],

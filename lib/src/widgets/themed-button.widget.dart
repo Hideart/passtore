@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/widgets/expanded-row.widget.dart';
 import 'package:passtore/core/widgets/tapable.widget.dart';
 import 'package:passtore/src/widgets/widgets.dart';
@@ -19,9 +20,9 @@ class ThemedButton extends StatelessWidget {
         child: Tapable(
           onTap: this.onTap,
           child: Container(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(AppMetrics.defaultMargin),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
               color: theme.accentColor,
             ),
             child: const ThemedText(
