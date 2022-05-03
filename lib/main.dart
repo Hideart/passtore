@@ -72,99 +72,104 @@ class PasstoreApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: Scaffold(
-          body: Stack(children: [MainScreen(), ModalsContainer()]),
-          floatingActionButton: Padding(
-            padding: EdgeInsets.only(
-              bottom: 80,
+        home: Stack(
+          children: [
+            Scaffold(
+              body: MainScreen(),
+              floatingActionButton: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 80,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: 'modals',
+                      child: const Icon(Icons.window),
+                      onPressed: () {
+                        this.modalsCubit.addOverlay(
+                              CustomModal(
+                                id: 'testModal',
+                                child: const Text('modal testing'),
+                              ),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    FloatingActionButton(
+                      heroTag: 'modals1',
+                      child: const Icon(Icons.window),
+                      onPressed: () {
+                        this.modalsCubit.addOverlay(
+                              CustomModal(
+                                id: 'testModal1',
+                                title: 'Test modal 1',
+                                message: 'modal testing 123',
+                                buttons: [
+                                  ThemedButton(
+                                    text: 'Confirm',
+                                    onTap: () => print('Custom modal button'),
+                                  ),
+                                ],
+                              ),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    FloatingActionButton(
+                      heroTag: 'modals123',
+                      child: const Icon(Icons.window),
+                      onPressed: () {
+                        this.modalsCubit.addOverlay(
+                              CustomModal(
+                                id: 'MultipleButtons',
+                                title: 'Multiple buttons',
+                                message:
+                                    'Multiple buttons\nTesting\nkjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk',
+                                buttons: [
+                                  ThemedButton(
+                                    text: 'Confirm',
+                                    onTap: () => print('Custom modal button'),
+                                  ),
+                                  ThemedButton(
+                                    text: 'Reject',
+                                    onTap: () => print('Custom modal button'),
+                                  ),
+                                ],
+                              ),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    FloatingActionButton(
+                      heroTag: 'modals',
+                      child: const Icon(Icons.telegram),
+                      onPressed: () => DI
+                          .get<ThemeCubit>(
+                            instanceName: 'theme',
+                          )
+                          .changeTheme(
+                            AvailableTheme.main,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    FloatingActionButton(
+                      heroTag: 'themes',
+                      child: const Icon(Icons.abc_rounded),
+                      onPressed: () => DI
+                          .get<ThemeCubit>(
+                            instanceName: 'theme',
+                          )
+                          .changeTheme(
+                            AvailableTheme.dark,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  heroTag: 'modals',
-                  child: const Icon(Icons.window),
-                  onPressed: () {
-                    this.modalsCubit.addOverlay(
-                          CustomModal(
-                            id: 'testModal',
-                            child: const Text('modal testing'),
-                          ),
-                        );
-                  },
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'modals1',
-                  child: const Icon(Icons.window),
-                  onPressed: () {
-                    this.modalsCubit.addOverlay(
-                          CustomModal(
-                            id: 'testModal1',
-                            title: 'Test modal 1',
-                            message: 'modal testing 123',
-                            buttons: [
-                              ThemedButton(
-                                text: 'Confirm',
-                                onTap: () => print('Custom modal button'),
-                              ),
-                            ],
-                          ),
-                        );
-                  },
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'modals123',
-                  child: const Icon(Icons.window),
-                  onPressed: () {
-                    this.modalsCubit.addOverlay(
-                          CustomModal(
-                            id: 'MultipleButtons',
-                            title: 'Multiple buttons',
-                            message:
-                                'Multiple buttons\nTesting\nkjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk',
-                            buttons: [
-                              ThemedButton(
-                                text: 'Confirm',
-                                onTap: () => print('Custom modal button'),
-                              ),
-                              ThemedButton(
-                                text: 'Reject',
-                                onTap: () => print('Custom modal button'),
-                              ),
-                            ],
-                          ),
-                        );
-                  },
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'modals',
-                  child: const Icon(Icons.telegram),
-                  onPressed: () => DI
-                      .get<ThemeCubit>(
-                        instanceName: 'theme',
-                      )
-                      .changeTheme(
-                        AvailableTheme.main,
-                      ),
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'themes',
-                  child: const Icon(Icons.abc_rounded),
-                  onPressed: () => DI
-                      .get<ThemeCubit>(
-                        instanceName: 'theme',
-                      )
-                      .changeTheme(
-                        AvailableTheme.dark,
-                      ),
-                ),
-              ],
-            ),
-          ),
+            Material(type: MaterialType.transparency, child: ModalsContainer()),
+          ],
         ),
       ),
     );
