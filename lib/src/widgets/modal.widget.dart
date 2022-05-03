@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/models/models.dart';
+import 'package:passtore/core/widgets/expanded-row.widget.dart';
 import 'package:passtore/src/services/locator.service.dart';
 import 'package:passtore/src/services/modal.service.dart';
 import 'package:passtore/src/widgets/widgets.dart';
@@ -76,6 +77,7 @@ class _CustomModalState extends State<CustomModal>
               ThemedButton(
                 text: 'CLOSE'.tr(),
                 onTap: this.handleClose,
+                type: ButtonType.secondary,
               ),
             ]
           : [])
@@ -149,33 +151,63 @@ class _CustomModalState extends State<CustomModal>
                   opacity: opacity,
                   child: AnimatedBuilder(
                     animation: this._modalAnimation,
-                    builder: (context, _) => FractionalTranslation(
-                      translation: Offset(0.0, 1 - this._modalAnimation.value),
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppMetrics.defaultMargin),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ThemedModalContent(
-                              title: this.widget.title,
-                              message: this.widget.message,
-                              child: this.widget.child,
+                    builder: (context, _) {
+                      List<Widget> _buttonLayout = this
+                          ._buttons
+                          .map(
+                            (btn) => Padding(
+                              padding: const EdgeInsets.only(
+                                top: AppMetrics.defaultMargin,
+                              ),
+                              child: btn,
                             ),
-                            ...this
-                                ._buttons
-                                .map(
-                                  (btn) => Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: AppMetrics.defaultMargin,
+                          )
+                          .toList();
+                      if (this._buttons.length == 2) {
+                        _buttonLayout = [
+                          ExpandedRow(
+                            children: [
+                              ...this
+                                  ._buttons
+                                  .map(
+                                    (btn) => Padding(
+                                      padding: EdgeInsets.only(
+                                        top: AppMetrics.defaultMargin,
+                                        right: btn != this._buttons.last
+                                            ? AppMetrics.defaultMargin / 2
+                                            : 0.0,
+                                        left: btn == this._buttons.last
+                                            ? AppMetrics.defaultMargin / 2
+                                            : 0.0,
+                                      ),
+                                      child: btn,
                                     ),
-                                    child: btn,
-                                  ),
-                                )
-                                .toList(),
-                          ],
+                                  )
+                                  .toList()
+                            ],
+                          )
+                        ];
+                      }
+                      return FractionalTranslation(
+                        translation:
+                            Offset(0.0, 1 - this._modalAnimation.value),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(AppMetrics.defaultMargin),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ThemedModalContent(
+                                title: this.widget.title,
+                                message: this.widget.message,
+                                child: this.widget.child,
+                              ),
+                              ..._buttonLayout.map((btn) => btn).toList(),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
               ),

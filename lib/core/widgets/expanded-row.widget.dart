@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ExpandedRow extends StatelessWidget {
-  final Widget child;
+  final List<Widget> children;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
 
   const ExpandedRow({
     Key? key,
-    required this.child,
+    required this.children,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisAlignment = MainAxisAlignment.start,
   }) : super(key: key);
@@ -18,7 +18,12 @@ class ExpandedRow extends StatelessWidget {
       crossAxisAlignment: this.crossAxisAlignment,
       mainAxisAlignment: this.mainAxisAlignment,
       children: [
-        Expanded(child: this.child),
+        ...this
+            .children
+            .map(
+              (child) => Expanded(child: child),
+            )
+            .toList(),
       ],
     );
   }
