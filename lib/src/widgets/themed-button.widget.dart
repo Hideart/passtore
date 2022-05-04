@@ -38,7 +38,7 @@ class ThemedButton extends StatelessWidget {
             Tapable(
               onTap: this.onTap,
               child: Container(
-                padding: const EdgeInsets.all(AppMetrics.defaultMargin),
+                padding: const EdgeInsets.all(AppMetrics.littleMargin),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
                   color: _buttonBackground,
