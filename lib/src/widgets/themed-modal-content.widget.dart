@@ -42,7 +42,7 @@ class ThemedModalContent extends StatelessWidget {
                               this.title!,
                               type: ThemedTextType.secondary,
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: AppMetrics.titleSize,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -55,7 +55,7 @@ class ThemedModalContent extends StatelessWidget {
                     ? ThemedText(
                         this.message!,
                         type: ThemedTextType.primary,
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: AppMetrics.textSize),
                       )
                     : const SizedBox(),
                 this.child != null ? this.child! : const SizedBox(),

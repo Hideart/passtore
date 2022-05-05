@@ -3,5 +3,8 @@
   "ERROR": {
     "SVG": "Couldn't load resource"
   },
-  "CLOSE": "Close"
+  "CLOSE": "Close",
+  "SETTINGS": {
+    "TITLE": "Settings"
+  }
 }

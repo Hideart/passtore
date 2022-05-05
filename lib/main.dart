@@ -5,15 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:passtore/core/models/models.dart';
+import 'package:passtore/src/screens/settings.screen.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:passtore/src/screens/main.screen.dart';
 import 'package:passtore/src/services/services.dart';
-//import 'package:flutter_services_binding/flutter_services_binding.dart';
+import 'package:flutter_services_binding/flutter_services_binding.dart';
 
 Future initApp() async {
+  FlutterServicesBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
-  // FlutterServicesBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   // Change app orientation to the portrait mode
@@ -75,7 +75,7 @@ class PasstoreApp extends StatelessWidget {
         home: Stack(
           children: [
             Scaffold(
-              body: MainScreen(),
+              body: SettingsScreen(),
               floatingActionButton: Padding(
                 padding: const EdgeInsets.only(
                   bottom: 80,

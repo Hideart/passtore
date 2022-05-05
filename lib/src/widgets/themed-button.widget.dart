@@ -50,10 +50,7 @@ class ThemedButton extends StatelessWidget {
                 child: this.text != null
                     ? ThemedText(
                         this.text!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                         type: ThemedTextType.primary,
                       )
                     : const SizedBox(),
