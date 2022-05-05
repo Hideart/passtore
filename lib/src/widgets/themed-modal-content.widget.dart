@@ -20,7 +20,7 @@ class ThemedModalContent extends StatelessWidget {
             padding: const EdgeInsets.all(AppMetrics.defaultMargin),
             constraints: const BoxConstraints(minHeight: 150),
             decoration: BoxDecoration(
-              color: theme.darkBackgroundColor,
+              color: theme.primaryColor,
               borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
               border: Border.all(color: theme.secondaryColor),
             ),

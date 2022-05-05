@@ -17,7 +17,7 @@ class ThemedScreenWrapper extends StatelessWidget {
             // key: ValueKey(theme.name),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [theme.secondaryColor, theme.primaryColor],
+                colors: [theme.darkBackgroundColor, theme.darkBackgroundColor],
                 end: Alignment.bottomCenter,
                 begin: Alignment.topCenter,
               ),

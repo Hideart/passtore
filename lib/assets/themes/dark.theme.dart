@@ -3,11 +3,11 @@ import 'package:passtore/core/models/models.dart';
 
 AppTheme darkTheme = const AppTheme(
   name: AvailableTheme.dark,
-  accentColor: Color(0xFF2AA8FC),
-  accentSecondaryColor: Color(0xFF158AD8),
-  primaryColor: Color(0xFF353F6B),
-  secondaryColor: Color(0xFF3D487C),
-  darkBackgroundColor: Color(0xFF2C325D),
+  accentColor: Color(0xFF00A58E),
+  accentSecondaryColor: Color(0xFF8AD8A9),
+  primaryColor: Color(0xFF24252A),
+  secondaryColor: Color(0xFF444444),
+  darkBackgroundColor: Color(0xFF1C1D21),
   textPrimaryColor: Color(0xFFFFFFFF),
-  textSecondaryColor: Color(0xFFC3C3C3),
+  textSecondaryColor: Color(0xFFCCCCCC),
 );

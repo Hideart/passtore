@@ -24,13 +24,13 @@ class ThemedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeChangable(
       builder: (context, theme) {
-        Color _buttonBackground = theme.accentColor;
+        List<Color> _buttonBackground;
         switch (this.type) {
           case ButtonType.secondary:
-            _buttonBackground = theme.darkBackgroundColor;
+            _buttonBackground = [theme.primaryColor, theme.primaryColor];
             break;
           default:
-            _buttonBackground = theme.accentColor;
+            _buttonBackground = [theme.accentColor, theme.accentSecondaryColor];
             break;
         }
         return ExpandedRow(
@@ -41,7 +41,11 @@ class ThemedButton extends StatelessWidget {
                 padding: const EdgeInsets.all(AppMetrics.littleMargin),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
-                  color: _buttonBackground,
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: _buttonBackground,
+                  ),
                 ),
                 child: this.text != null
                     ? ThemedText(
