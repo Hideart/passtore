@@ -6,4 +6,5 @@ class AppMetrics {
   static const double headerSize = 26.0;
   static const double titleSize = 20.0;
   static const double textSize = 16.0;
+  static const double littleTextSize = 14.0;
 }

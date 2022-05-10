@@ -4,6 +4,7 @@ class AppTheme {
   final AvailableTheme name;
   final Color textPrimaryColor;
   final Color textSecondaryColor;
+  final Color textPaleColor;
   final Color primaryColor;
   final Color accentColor;
   final Color secondaryColor;
@@ -18,6 +19,7 @@ class AppTheme {
     required this.accentSecondaryColor,
     required this.textPrimaryColor,
     required this.textSecondaryColor,
+    required this.textPaleColor,
     required this.darkBackgroundColor,
   });
 }

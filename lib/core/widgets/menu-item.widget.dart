@@ -9,16 +9,18 @@ class MenuItemData {
   final String? value;
   final Widget? icon;
   final bool hasChildren;
+  final Color? textColor;
 
   MenuItemData(
     this.text, {
     this.value,
     this.icon,
     this.hasChildren = false,
+    this.textColor,
   });
 }
 
-class MenuItem extends StatelessWidget implements MenuItemData {
+class ThemedMenuItem extends StatelessWidget implements MenuItemData {
   @override
   final String text;
   @override
@@ -27,71 +29,120 @@ class MenuItem extends StatelessWidget implements MenuItemData {
   final Widget? icon;
   @override
   final bool hasChildren;
-  final bool needSeparator;
-  final Color backgroundColor;
-  final Color borderColor;
+  @override
+  final Color? textColor;
 
-  const MenuItem(
+  final bool needSeparator;
+
+  const ThemedMenuItem(
     this.text, {
     Key? key,
     this.value,
     this.icon,
     this.hasChildren = false,
     this.needSeparator = true,
-    this.backgroundColor = Colors.red,
-    this.borderColor = Colors.red,
+    this.textColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Tapable(
-          child: ExpandedRow(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(
-                  top: AppMetrics.defaultMargin,
-                  bottom: AppMetrics.defaultMargin,
-                  left: AppMetrics.defaultMargin * 2,
-                ),
-                decoration: BoxDecoration(
-                  color: this.backgroundColor,
-                  borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
-                ),
-                child: ThemedText(
-                  this.text,
-                  type: ThemedTextType.primary,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+    return ThemeChangable(
+      builder: (context, theme) => Column(
+        children: [
+          Tapable(
+            child: ExpandedRow(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                    bottom: AppMetrics.defaultMargin,
+                    right: AppMetrics.defaultMargin,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(AppMetrics.borderRadius),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppMetrics.defaultMargin,
+                            ),
+                            child: Container(
+                              width: AppMetrics.littleMargin * 2,
+                              constraints: const BoxConstraints(
+                                maxWidth: AppMetrics.littleMargin * 2,
+                              ),
+                              child: this.icon ?? const SizedBox(),
+                            ),
+                          ),
+                          ThemedText(
+                            this.text,
+                            type: ThemedTextType.primary,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: this.textColor ?? theme.textPrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      this.hasChildren
+                          ? Row(
+                              children: [
+                                this.value != null && this.value!.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: AppMetrics.littleMargin / 2,
+                                        ),
+                                        child: ThemedText(
+                                          this.value!,
+                                          style: TextStyle(
+                                            fontSize: AppMetrics.littleTextSize,
+                                            color: theme.textPaleColor,
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: theme.textPaleColor,
+                                  size: AppMetrics.defaultMargin,
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            onTap: () => print('Menu item tap'),
           ),
-          onTap: () => print('Menu item tap'),
-        ),
-        this.needSeparator
-            ? Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: AppMetrics.defaultMargin * 2,
-                      ),
-                      child: Container(
-                        height: 1,
-                        color: this.borderColor,
+          this.needSeparator
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: AppMetrics.defaultMargin * 2 +
+                              AppMetrics.littleMargin * 2,
+                        ),
+                        child: Container(
+                          height: 1,
+                          color: theme.secondaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            : const SizedBox()
-      ],
+                  ],
+                )
+              : const SizedBox()
+        ],
+      ),
     );
   }
 }

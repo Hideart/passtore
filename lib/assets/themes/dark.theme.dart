@@ -10,4 +10,5 @@ AppTheme darkTheme = const AppTheme(
   darkBackgroundColor: Color(0xFF1C1D21),
   textPrimaryColor: Color(0xFFFFFFFF),
   textSecondaryColor: Color(0xFFCCCCCC),
+  textPaleColor: Color(0xFF797979),
 );

@@ -24,7 +24,10 @@ class SettingsScreen extends StatelessWidget {
                 MenuItemData(
                   'Language',
                   hasChildren: true,
-                  icon: const Icon(Icons.arrow_forward_ios),
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                  ),
                   value: 'English',
                 ),
                 MenuItemData('Theme'),
@@ -40,8 +43,10 @@ class SettingsScreen extends StatelessWidget {
                   MenuItemData(
                     'Wipe data',
                     hasChildren: true,
-                    icon: const Icon(Icons.arrow_forward_ios),
+                    icon:
+                        const Icon(Icons.arrow_forward_ios, color: Colors.red),
                     value: 'English',
+                    textColor: Colors.red,
                   ),
                 ],
               ),

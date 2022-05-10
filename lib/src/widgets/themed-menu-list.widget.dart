@@ -25,14 +25,13 @@ class MenuItemsList extends StatelessWidget {
                 children: this
                     .items
                     .map(
-                      (item) => MenuItem(
+                      (item) => ThemedMenuItem(
                         item.text,
                         icon: item.icon,
                         value: item.value,
                         hasChildren: item.hasChildren,
                         needSeparator: item != this.items.last,
-                        backgroundColor: theme.primaryColor,
-                        borderColor: theme.secondaryColor,
+                        textColor: item.textColor ?? theme.textPrimaryColor,
                       ),
                     )
                     .toList(),

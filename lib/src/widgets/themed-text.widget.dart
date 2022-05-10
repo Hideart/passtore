@@ -26,7 +26,7 @@ class ThemedText extends StatelessWidget {
             ? theme.textPrimaryColor
             : theme.textSecondaryColor;
         final TextStyle themedStyle = TextStyle(
-          color: textColor,
+          color: this.style?.color ?? textColor,
           fontSize: this.style?.fontSize ?? AppMetrics.textSize,
           fontWeight: this.style?.fontWeight ?? FontWeight.normal,
           inherit: this.style?.inherit ?? true,
