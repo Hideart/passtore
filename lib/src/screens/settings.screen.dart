@@ -9,50 +9,253 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ThemedScreenWrapper(
-        margins: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
+        header: ThemedHeaderData(title: 'SETTINGS.TITLE'.tr(), pinned: true),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppMetrics.defaultMargin,
+            ),
+            child: Column(
               children: [
-                ThemedHeader(
-                  title: 'SETTINGS.TITLE'.tr(),
+                MenuItemsList(
+                  items: [
+                    MenuItemData(
+                      'Language',
+                      hasChildren: true,
+                      icon: const Icon(
+                        Icons.language,
+                        color: Colors.white,
+                      ),
+                      value: 'English',
+                    ),
+                    MenuItemData(
+                      'Theme',
+                      hasChildren: true,
+                      value: 'Dark',
+                      icon: const Icon(
+                        Icons.color_lens_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                    MenuItemData(
+                      'Support & Donate',
+                      icon: const Icon(
+                        Icons.support_agent,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    title: 'Основные',
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppMetrics.defaultMargin,
+                  ),
+                  child: MenuItemsList(
+                    title: 'Специфические',
+                    items: [
+                      MenuItemData(
+                        'Language',
+                        hasChildren: true,
+                        icon: const Icon(
+                          Icons.language,
+                          color: Colors.white,
+                        ),
+                        value: 'English',
+                      ),
+                      MenuItemData(
+                        'Theme',
+                        hasChildren: true,
+                        value: 'Dark',
+                        icon: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      MenuItemData(
+                        'Support & Donate',
+                        icon: const Icon(
+                          Icons.support_agent,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            MenuItemsList(
-              items: [
-                MenuItemData(
-                  'Language',
-                  hasChildren: true,
-                  icon: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.white,
-                  ),
-                  value: 'English',
-                ),
-                MenuItemData('Theme'),
-                MenuItemData('Support & Donate', hasChildren: true),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: AppMetrics.defaultMargin,
-              ),
-              child: MenuItemsList(
-                items: [
-                  MenuItemData(
-                    'Wipe data',
-                    hasChildren: true,
-                    icon:
-                        const Icon(Icons.arrow_forward_ios, color: Colors.red),
-                    value: 'English',
-                    textColor: Colors.red,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

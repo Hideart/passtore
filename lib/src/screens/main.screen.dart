@@ -6,11 +6,12 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ThemedScreenWrapper(
-        margins: const EdgeInsets.all(20),
-        child: ThemedButton(
-          text: 'Test',
-          onTap: () => print('tapped'),
-        ),
+        children: [
+          ThemedButton(
+            text: 'Test',
+            onTap: () => print('tapped'),
+          ),
+        ],
       ),
     );
   }
