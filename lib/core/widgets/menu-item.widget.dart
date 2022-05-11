@@ -20,7 +20,7 @@ class MenuItemData {
   });
 }
 
-class ThemedMenuItem extends StatelessWidget implements MenuItemData {
+class ThemedMenuItem extends StatefulWidget implements MenuItemData {
   @override
   final String text;
   @override
@@ -45,23 +45,53 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
   }) : super(key: key);
 
   @override
+  State<ThemedMenuItem> createState() => _MenuItemState();
+}
+
+class _MenuItemState extends State<ThemedMenuItem> {
+  double _backgroundOpacity = 0.0;
+
+  @override
   Widget build(BuildContext context) {
     return ThemeChangable(
       builder: (context, theme) => Column(
         children: [
-          Tapable(
-            child: ExpandedRow(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
+          ExpandedRow(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.only(
+                  top: AppMetrics.defaultMargin - AppMetrics.littleMargin,
+                  bottom: AppMetrics.defaultMargin - AppMetrics.littleMargin,
+                  right: AppMetrics.defaultMargin - AppMetrics.littleMargin,
+                  left: AppMetrics.defaultMargin - AppMetrics.littleMargin,
+                ),
+                child: Tapable(
+                  enableTapAnimation: false,
                   padding: const EdgeInsets.only(
-                    top: AppMetrics.defaultMargin,
-                    bottom: AppMetrics.defaultMargin,
-                    right: AppMetrics.defaultMargin,
+                    top: AppMetrics.littleMargin,
+                    bottom: AppMetrics.littleMargin,
+                    right: AppMetrics.littleMargin,
                   ),
+                  onHover: (hovered) {
+                    if (hovered) {
+                      this.setState(() {
+                        this._backgroundOpacity = 0.6;
+                      });
+                    } else {
+                      this.setState(() {
+                        this._backgroundOpacity = 0.0;
+                      });
+                    }
+                  },
+                  onTap: () => print('Menu item tap'),
+                  splashColor: theme.secondaryColor.withOpacity(0.5),
                   decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AppMetrics.borderRadius),
+                    borderRadius: BorderRadius.circular(
+                      AppMetrics.borderRadius,
+                    ),
+                    color: theme.secondaryColor
+                        .withOpacity(this._backgroundOpacity),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,38 +99,42 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppMetrics.defaultMargin,
+                            padding: const EdgeInsets.only(
+                              left: AppMetrics.defaultMargin -
+                                  AppMetrics.littleMargin,
+                              right: AppMetrics.defaultMargin,
                             ),
                             child: Container(
                               width: AppMetrics.littleMargin * 2,
                               constraints: const BoxConstraints(
                                 maxWidth: AppMetrics.littleMargin * 2,
                               ),
-                              child: this.icon ?? const SizedBox(),
+                              child: this.widget.icon ?? const SizedBox(),
                             ),
                           ),
                           ThemedText(
-                            this.text,
+                            this.widget.text,
                             type: ThemedTextType.primary,
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: this.textColor ?? theme.textPrimaryColor,
+                              color: this.widget.textColor ??
+                                  theme.textPrimaryColor,
                             ),
                           ),
                         ],
                       ),
-                      this.hasChildren
+                      this.widget.hasChildren
                           ? Row(
                               children: [
-                                this.value != null && this.value!.isNotEmpty
+                                this.widget.value != null &&
+                                        this.widget.value!.isNotEmpty
                                     ? Padding(
                                         padding: const EdgeInsets.only(
                                           right: AppMetrics.littleMargin / 2,
                                         ),
                                         child: ThemedText(
-                                          this.value!,
+                                          this.widget.value!,
                                           style: TextStyle(
                                             fontSize: AppMetrics.littleTextSize,
                                             color: theme.textPaleColor,
@@ -119,18 +153,19 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
                     ],
                   ),
                 ),
-              ],
-            ),
-            onTap: () => print('Menu item tap'),
+              ),
+            ],
           ),
-          this.needSeparator
+          this.widget.needSeparator
               ? Row(
                   children: [
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: AppMetrics.defaultMargin * 2 +
-                              AppMetrics.littleMargin * 2,
+                              AppMetrics.littleMargin * 2 -
+                              (AppMetrics.defaultMargin -
+                                  AppMetrics.littleMargin),
                         ),
                         child: Container(
                           height: 1,

@@ -40,7 +40,7 @@ class ThemedModalContent extends StatelessWidget {
                             ),
                             child: ThemedText(
                               this.title!,
-                              type: ThemedTextType.secondary,
+                              type: ThemedTextType.primary,
                               style: const TextStyle(
                                 fontSize: AppMetrics.titleSize,
                                 fontWeight: FontWeight.bold,

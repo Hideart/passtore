@@ -15,55 +15,101 @@ class SettingsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: AppMetrics.defaultMargin,
             ),
-            child: Column(
-              children: [
-                MenuItemsList(
-                  items: [
-                    MenuItemData(
-                      'Language',
-                      hasChildren: true,
-                      icon: const Icon(
-                        Icons.language,
-                        color: Colors.white,
-                      ),
-                      value: 'English',
+            child: ThemeChangable(
+              builder: (context, theme) {
+                return Column(
+                  children: [
+                    MenuItemsList(
+                      items: [
+                        MenuItemData(
+                          'Language',
+                          hasChildren: true,
+                          icon: Icon(
+                            Icons.language,
+                            color: theme.textPrimaryColor,
+                          ),
+                          value: 'English',
+                        ),
+                        MenuItemData(
+                          'Theme',
+                          hasChildren: true,
+                          value: 'Dark',
+                          icon: Icon(
+                            Icons.color_lens_outlined,
+                            color: theme.textPrimaryColor,
+                          ),
+                        ),
+                        MenuItemData(
+                          'Support & Donate',
+                          icon: Icon(
+                            Icons.support_agent,
+                            color: theme.textPrimaryColor,
+                          ),
+                        ),
+                      ],
                     ),
-                    MenuItemData(
-                      'Theme',
-                      hasChildren: true,
-                      value: 'Dark',
-                      icon: const Icon(
-                        Icons.color_lens_outlined,
-                        color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppMetrics.defaultMargin,
+                      ),
+                      child: MenuItemsList(
+                        title: 'Another',
+                        items: [
+                          MenuItemData(
+                            'Wipe all data',
+                            textColor: Colors.red,
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    MenuItemData(
-                      'Support & Donate',
-                      icon: const Icon(
-                        Icons.support_agent,
-                        color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppMetrics.defaultMargin,
+                      ),
+                      child: MenuItemsList(
+                        title: 'Main params',
+                        items: [
+                          MenuItemData(
+                            'Wipe all data',
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: theme.textPrimaryColor,
+                            ),
+                          ),
+                          MenuItemData(
+                            'Wipe all data',
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: theme.textPrimaryColor,
+                            ),
+                          ),
+                          MenuItemData(
+                            'Wipe all data',
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: theme.textPrimaryColor,
+                            ),
+                          ),
+                          MenuItemData(
+                            'Wipe all data',
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: theme.textPrimaryColor,
+                            ),
+                          ),
+                          MenuItemData(
+                            'Wipe all data',
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: AppMetrics.defaultMargin,
-                  ),
-                  child: MenuItemsList(
-                    items: [
-                      MenuItemData(
-                        'Wipe all data',
-                        textColor: Colors.red,
-                        icon: const Icon(
-                          Icons.delete_outline,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],

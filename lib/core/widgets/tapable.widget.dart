@@ -8,6 +8,14 @@ class Tapable extends StatefulWidget {
   final Curve? animation;
   final double minScale;
   final double maxScale;
+  final EdgeInsets? padding;
+  final BoxDecoration? decoration;
+  final Color? highlightColor;
+  final Color? splashColor;
+  final Color? focusColor;
+  final Color? hoverColor;
+  final bool enableTapAnimation;
+  final void Function(bool)? onHover;
   final void Function(TapDownDetails)? onTapDown;
   final void Function(TapUpDetails)? onTapUp;
   final void Function()? onTapCancel;
@@ -19,9 +27,17 @@ class Tapable extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onHover,
+    this.padding,
+    this.decoration,
+    this.splashColor,
+    this.highlightColor,
+    this.focusColor,
+    this.hoverColor,
     this.startAnimationDelay = const Duration(seconds: 0),
     this.minScale = 0.9,
     this.maxScale = 1.0,
+    this.enableTapAnimation = true,
     required this.child,
     required this.onTap,
   }) : super(key: key);
@@ -48,8 +64,9 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
     duration: const Duration(
       milliseconds: 100,
     ),
-    lowerBound: 1 - this.widget.maxScale,
-    upperBound: 1 - this.widget.minScale,
+    lowerBound: !this.widget.enableTapAnimation ? 1 : 1 - this.widget.maxScale,
+    upperBound: !this.widget.enableTapAnimation ? 1 : 1 - this.widget.minScale,
+    value: this.widget.enableTapAnimation ? 0 : 1,
   )..addListener(() {
       setState(() {
         this.scale = 1 - this._tapAnimationController.value;
@@ -90,27 +107,54 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
       scale: this._animationIn,
       child: Transform.scale(
         scale: this.scale,
-        child: GestureDetector(
-          onTapDown: (details) {
-            this._tapAnimationController.forward();
-            if (this.widget.onTapDown != null) {
-              this.widget.onTapDown!(details);
-            }
-          },
-          onTapUp: (details) {
-            this._tapAnimationController.reverse();
-            if (this.widget.onTapUp != null) {
-              this.widget.onTapUp!(details);
-            }
-          },
-          onTapCancel: () {
-            this._tapAnimationController.reverse();
-            if (this.widget.onTapCancel != null) {
-              this.widget.onTapCancel!();
-            }
-          },
-          onTap: this.widget.onTap,
-          child: this.widget.child,
+        child: Material(
+          color: Colors.transparent,
+          child: GestureDetector(
+            onTapDown: (details) {
+              if (this.widget.enableTapAnimation) {
+                this._tapAnimationController.forward();
+              }
+              if (this.widget.onTapDown != null) {
+                this.widget.onTapDown!(details);
+              }
+            },
+            onTapUp: (details) {
+              if (this.widget.enableTapAnimation) {
+                this._tapAnimationController.reverse();
+              }
+              if (this.widget.onTapUp != null) {
+                this.widget.onTapUp!(details);
+              }
+            },
+            onTapCancel: () {
+              if (this.widget.enableTapAnimation) {
+                this._tapAnimationController.reverse();
+              }
+              if (this.widget.onTapCancel != null) {
+                this.widget.onTapCancel!();
+              }
+            },
+            child: Ink(
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: this.widget.decoration?.borderRadius ??
+                      BorderRadius.circular(0.0),
+                ),
+                hoverColor: this.widget.hoverColor ?? Colors.transparent,
+                highlightColor:
+                    this.widget.highlightColor ?? Colors.transparent,
+                splashColor:
+                    this.widget.splashColor ?? Colors.grey.withOpacity(0.2),
+                onTap: this.widget.onTap,
+                onHover: this.widget.onHover,
+                child: Container(
+                  padding: this.widget.padding,
+                  decoration: this.widget.decoration,
+                  child: this.widget.child,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

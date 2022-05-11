@@ -19,13 +19,14 @@ class MenuItemsList extends StatelessWidget {
           this.title != null && this.title!.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.only(
+                    left: AppMetrics.defaultMargin,
                     bottom: AppMetrics.defaultMargin,
                   ),
                   child: ThemedText(
-                    this.title!,
-                    type: ThemedTextType.primary,
+                    this.title!.toUpperCase(),
+                    type: ThemedTextType.secondary,
                     style: const TextStyle(
-                      fontSize: AppMetrics.textSize,
+                      fontSize: AppMetrics.littleTextSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -40,7 +41,7 @@ class MenuItemsList extends StatelessWidget {
                     color: theme.primaryColor,
                     borderRadius:
                         BorderRadius.circular(AppMetrics.borderRadius),
-                    // border: Border.all(color: theme.secondaryColor),
+                    border: Border.all(color: theme.secondaryColor),
                   ),
                   child: Column(
                     children: this

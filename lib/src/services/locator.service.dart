@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
+import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/src/services/services.dart';
 
 class DI {
