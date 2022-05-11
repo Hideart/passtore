@@ -37,24 +37,23 @@ class ThemedButton extends StatelessWidget {
           children: [
             Tapable(
               onTap: this.onTap,
-              child: Container(
-                padding: const EdgeInsets.all(AppMetrics.littleMargin),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: _buttonBackground,
-                  ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: _buttonBackground,
                 ),
-                child: this.text != null
-                    ? ThemedText(
-                        this.text!,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        type: ThemedTextType.primary,
-                      )
-                    : const SizedBox(),
               ),
+              splashColor: theme.accentSecondaryColor.withOpacity(0.3),
+              padding: const EdgeInsets.all(AppMetrics.littleMargin),
+              child: this.text != null
+                  ? ThemedText(
+                      this.text!,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      type: ThemedTextType.primary,
+                    )
+                  : const SizedBox(),
             ),
           ],
         );
