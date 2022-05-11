@@ -124,32 +124,32 @@ class _MenuItemState extends State<ThemedMenuItem> {
                           ),
                         ],
                       ),
-                      this.widget.hasChildren
-                          ? Row(
-                              children: [
-                                this.widget.value != null &&
-                                        this.widget.value!.isNotEmpty
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: AppMetrics.littleMargin / 2,
-                                        ),
-                                        child: ThemedText(
-                                          this.widget.value!,
-                                          style: TextStyle(
-                                            fontSize: AppMetrics.littleTextSize,
-                                            color: theme.textPaleColor,
-                                          ),
-                                        ),
-                                      )
-                                    : const SizedBox(),
-                                Icon(
+                      Row(
+                        children: [
+                          this.widget.value != null &&
+                                  this.widget.value!.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: AppMetrics.littleMargin / 2,
+                                  ),
+                                  child: ThemedText(
+                                    this.widget.value!,
+                                    style: TextStyle(
+                                      fontSize: AppMetrics.littleTextSize,
+                                      color: theme.textPaleColor,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                          this.widget.hasChildren
+                              ? Icon(
                                   Icons.arrow_forward_ios,
                                   color: theme.textPaleColor,
                                   size: AppMetrics.defaultMargin,
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
+                                )
+                              : const SizedBox(),
+                        ],
+                      )
                     ],
                   ),
                 ),
