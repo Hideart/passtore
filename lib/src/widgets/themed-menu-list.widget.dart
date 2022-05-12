@@ -54,6 +54,8 @@ class MenuItemsList extends StatelessWidget {
                             hasChildren: item.hasChildren,
                             needSeparator: item != this.items.last,
                             textColor: item.textColor ?? theme.textPrimaryColor,
+                            hoverColor: item.hoverColor,
+                            splashColor: item.splashColor,
                           ),
                         )
                         .toList(),

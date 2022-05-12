@@ -10,6 +10,8 @@ class MenuItemData {
   final Widget? icon;
   final bool hasChildren;
   final Color? textColor;
+  final Color? hoverColor;
+  final Color? splashColor;
 
   MenuItemData(
     this.text, {
@@ -17,10 +19,12 @@ class MenuItemData {
     this.icon,
     this.hasChildren = false,
     this.textColor,
+    this.hoverColor,
+    this.splashColor,
   });
 }
 
-class ThemedMenuItem extends StatefulWidget implements MenuItemData {
+class ThemedMenuItem extends StatelessWidget implements MenuItemData {
   @override
   final String text;
   @override
@@ -31,6 +35,10 @@ class ThemedMenuItem extends StatefulWidget implements MenuItemData {
   final bool hasChildren;
   @override
   final Color? textColor;
+  @override
+  final Color? hoverColor;
+  @override
+  final Color? splashColor;
 
   final bool needSeparator;
 
@@ -42,14 +50,9 @@ class ThemedMenuItem extends StatefulWidget implements MenuItemData {
     this.hasChildren = false,
     this.needSeparator = true,
     this.textColor,
+    this.hoverColor,
+    this.splashColor,
   }) : super(key: key);
-
-  @override
-  State<ThemedMenuItem> createState() => _MenuItemState();
-}
-
-class _MenuItemState extends State<ThemedMenuItem> {
-  double _backgroundOpacity = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,25 +76,14 @@ class _MenuItemState extends State<ThemedMenuItem> {
                     bottom: AppMetrics.littleMargin,
                     right: AppMetrics.littleMargin,
                   ),
-                  onHover: (hovered) {
-                    if (hovered) {
-                      this.setState(() {
-                        this._backgroundOpacity = 0.6;
-                      });
-                    } else {
-                      this.setState(() {
-                        this._backgroundOpacity = 0.0;
-                      });
-                    }
-                  },
                   onTap: () => print('Menu item tap'),
-                  splashColor: theme.secondaryColor.withOpacity(0.5),
+                  splashColor: this.splashColor,
+                  hoverColor:
+                      this.hoverColor ?? theme.secondaryColor.withOpacity(0.6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                       AppMetrics.borderRadius,
                     ),
-                    color: theme.secondaryColor
-                        .withOpacity(this._backgroundOpacity),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,31 +101,29 @@ class _MenuItemState extends State<ThemedMenuItem> {
                               constraints: const BoxConstraints(
                                 maxWidth: AppMetrics.littleMargin * 2,
                               ),
-                              child: this.widget.icon ?? const SizedBox(),
+                              child: this.icon ?? const SizedBox(),
                             ),
                           ),
                           ThemedText(
-                            this.widget.text,
+                            this.text,
                             type: ThemedTextType.primary,
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: this.widget.textColor ??
-                                  theme.textPrimaryColor,
+                              color: this.textColor ?? theme.textPrimaryColor,
                             ),
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          this.widget.value != null &&
-                                  this.widget.value!.isNotEmpty
+                          this.value != null && this.value!.isNotEmpty
                               ? Padding(
                                   padding: const EdgeInsets.only(
                                     right: AppMetrics.littleMargin / 2,
                                   ),
                                   child: ThemedText(
-                                    this.widget.value!,
+                                    this.value!,
                                     style: TextStyle(
                                       fontSize: AppMetrics.littleTextSize,
                                       color: theme.textPaleColor,
@@ -141,7 +131,7 @@ class _MenuItemState extends State<ThemedMenuItem> {
                                   ),
                                 )
                               : const SizedBox(),
-                          this.widget.hasChildren
+                          this.hasChildren
                               ? Icon(
                                   Icons.arrow_forward_ios,
                                   color: theme.textPaleColor,
@@ -156,7 +146,7 @@ class _MenuItemState extends State<ThemedMenuItem> {
               ),
             ],
           ),
-          this.widget.needSeparator
+          this.needSeparator
               ? Row(
                   children: [
                     Expanded(

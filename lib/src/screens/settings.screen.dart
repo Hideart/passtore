@@ -58,6 +58,8 @@ class SettingsScreen extends StatelessWidget {
                           MenuItemData(
                             'Wipe all data',
                             textColor: Colors.red,
+                            hoverColor: Colors.red.withOpacity(0.2),
+                            splashColor: Colors.red.withOpacity(0.2),
                             icon: const Icon(
                               Icons.delete_outline,
                               color: Colors.red,
