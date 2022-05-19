@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passtore/assets/metrics.dart';
+import 'package:passtore/core/models/theme.model.dart';
 import 'package:passtore/src/widgets/themed-text.widget.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
@@ -29,6 +30,8 @@ class ThemedHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
+
     return SliverAppBar(
       elevation: 0,
       pinned: this.pinned,
@@ -38,45 +41,43 @@ class ThemedHeader extends StatelessWidget {
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
           final double top = constraints.biggest.height;
-          return ThemeChangable(
-            builder: (context, theme) => Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: theme.darkBackgroundColor,
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 1.0,
-                          color: theme.secondaryColor.withOpacity(
-                            top == AppMetrics.headerExpandSize || !this.pinned
-                                ? 0
-                                : 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                    child: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.none,
-                      expandedTitleScale: 1.3,
-                      centerTitle: false,
-                      titlePadding: const EdgeInsets.all(
-                        AppMetrics.defaultMargin,
-                      ),
-                      title: ThemedText(
-                        this.title,
-                        type: ThemedTextType.primary,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: AppMetrics.titleSize,
-                          fontWeight: FontWeight.bold,
+          return Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: theme.darkBackgroundColor,
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1.0,
+                        color: theme.secondaryColor.withOpacity(
+                          top == AppMetrics.headerExpandSize || !this.pinned
+                              ? 0
+                              : 1,
                         ),
                       ),
                     ),
                   ),
+                  child: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.none,
+                    expandedTitleScale: 1.3,
+                    centerTitle: false,
+                    titlePadding: const EdgeInsets.all(
+                      AppMetrics.defaultMargin,
+                    ),
+                    title: ThemedText(
+                      this.title,
+                      type: ThemedTextType.primary,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: AppMetrics.titleSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),

@@ -4,14 +4,15 @@ import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/core/models/theme.model.dart';
 
 class ThemeCubit extends HydratedCubit<AppTheme> {
-  ThemeCubit([AppTheme? initialState]) : super(initialState ?? defaultTheme);
+  ThemeCubit([AppTheme? initialState]) : super(initialState ?? lightTheme);
 
-  final List<AppTheme> _themes = [defaultTheme, darkTheme];
+  final List<AppTheme> _themes = [lightTheme, darkTheme];
 
   void changeTheme(AvailableTheme themeName) {
     final AppTheme? theme = this._themes.find((th) => th.name == themeName);
     if (theme != null) {
-      return emit(theme);
+      emit(theme);
+      return;
     }
     return emit(state);
   }
@@ -21,7 +22,7 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
     final String? themeName = json['currentTheme'] as String?;
     final currentTheme = this._themes.find((th) {
       var th2 = th;
-      return th2.name.toShortString() == themeName;
+      return th2.name.toString() == themeName;
     });
     if (currentTheme != null) {
       return currentTheme;
@@ -31,6 +32,6 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
 
   @override
   Map<String, String> toJson(AppTheme state) {
-    return {'currentTheme': state.name.toShortString()};
+    return {'currentTheme': state.name.toString()};
   }
 }

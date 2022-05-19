@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passtore/assets/metrics.dart';
+import 'package:passtore/core/models/theme.model.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
 class ThemedScreenWrapper extends StatelessWidget {
@@ -12,17 +12,16 @@ class ThemedScreenWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
+
     return Stack(
       children: [
-        ThemeChangable(
-          builder: (themeContext, theme) => Container(
-            key: ValueKey(theme.name),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [theme.darkBackgroundColor, theme.darkBackgroundColor],
-                end: Alignment.bottomCenter,
-                begin: Alignment.topCenter,
-              ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [theme.darkBackgroundColor, theme.darkBackgroundColor],
+              end: Alignment.bottomCenter,
+              begin: Alignment.topCenter,
             ),
           ),
         ),

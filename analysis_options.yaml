@@ -8,6 +8,7 @@ linter:
     require_trailing_commas: true
     use_key_in_widget_constructors: false
     overridden_fields: false
+    constant_identifier_names: false
 
 analyzer:
   strong-mode:

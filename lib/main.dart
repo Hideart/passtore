@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:passtore/assets/metrics.dart';
+import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/core/models/models.dart';
+import 'package:passtore/core/widgets/theme-transition.widget.dart';
 import 'package:passtore/src/screens/settings.screen.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/services/services.dart';
-import 'package:flutter_services_binding/flutter_services_binding.dart';
 
 Future initApp() async {
-  FlutterServicesBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
 
   // Change app orientation to the portrait mode
   SystemChrome.setPreferredOrientations(
@@ -25,10 +25,12 @@ Future initApp() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
+
+  await EasyLocalization.ensureInitialized();
 }
 
 void main() async {
-  initApp();
+  await initApp();
 
   final storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
@@ -68,109 +70,129 @@ class PasstoreApp extends StatelessWidget {
           create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
         ),
       ],
-      child: MaterialApp(
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        home: Stack(
-          children: [
-            Scaffold(
-              body: SettingsScreen(),
-              floatingActionButton: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 80,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: 'modals',
-                      child: const Icon(Icons.window),
-                      onPressed: () {
-                        this.modalsCubit.addOverlay(
-                              CustomModal(
-                                id: 'testModal',
-                                child: const Text('modal testing'),
-                              ),
-                            );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    FloatingActionButton(
-                      heroTag: 'modals1',
-                      child: const Icon(Icons.window),
-                      onPressed: () {
-                        this.modalsCubit.addOverlay(
-                              CustomModal(
-                                id: 'testModal1',
-                                title: 'Test modal 1',
-                                message: 'modal testing 123',
-                                buttons: [
-                                  ThemedButton(
-                                    text: 'Confirm',
-                                    onTap: () => print('Custom modal button'),
-                                  ),
-                                ],
-                              ),
-                            );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    FloatingActionButton(
-                      heroTag: 'modals123',
-                      child: const Icon(Icons.window),
-                      onPressed: () {
-                        this.modalsCubit.addOverlay(
-                              CustomModal(
-                                id: 'MultipleButtons',
-                                title: 'Multiple buttons',
-                                message:
-                                    'Multiple buttons\nTesting\nkjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk',
-                                buttons: [
-                                  ThemedButton(
-                                    text: 'Confirm',
-                                    onTap: () => print('Custom modal button'),
-                                  ),
-                                  ThemedButton(
-                                    text: 'Reject',
-                                    onTap: () => print('Custom modal button'),
-                                  ),
-                                ],
-                              ),
-                            );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    FloatingActionButton(
-                      heroTag: 'modals',
-                      child: const Icon(Icons.telegram),
-                      onPressed: () => DI
-                          .get<ThemeCubit>(
-                            instanceName: 'theme',
-                          )
-                          .changeTheme(
-                            AvailableTheme.main,
+      child: BlocBuilder<ThemeCubit, AppTheme>(
+        builder: (context, theme) {
+          return MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: lightThemeData,
+            darkTheme: darkThemeData,
+            themeMode: theme.brightness == Brightness.light
+                ? ThemeMode.light
+                : ThemeMode.dark,
+            home: ThemeTransition(
+              theme: theme,
+              offset: const Offset(250, 170),
+              duration: AppMetrics.switchThemeDuration,
+              child: Stack(
+                children: [
+                  Scaffold(
+                    body: SettingsScreen(),
+                    floatingActionButton: Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 80,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FloatingActionButton(
+                            heroTag: 'modals',
+                            child: const Icon(Icons.window),
+                            onPressed: () {
+                              this.modalsCubit.addOverlay(
+                                    CustomModal(
+                                      id: 'testModal',
+                                      child: const Text('modal testing'),
+                                    ),
+                                  );
+                            },
                           ),
-                    ),
-                    const SizedBox(height: 10),
-                    FloatingActionButton(
-                      heroTag: 'themes',
-                      child: const Icon(Icons.abc_rounded),
-                      onPressed: () => DI
-                          .get<ThemeCubit>(
-                            instanceName: 'theme',
-                          )
-                          .changeTheme(
-                            AvailableTheme.dark,
+                          const SizedBox(height: 10),
+                          FloatingActionButton(
+                            heroTag: 'modals1',
+                            child: const Icon(Icons.window),
+                            onPressed: () {
+                              this.modalsCubit.addOverlay(
+                                    CustomModal(
+                                      id: 'testModal1',
+                                      title: 'Test modal 1',
+                                      message: 'modal testing 123',
+                                      buttons: [
+                                        ThemedButton(
+                                          text: 'Confirm',
+                                          onTap: () =>
+                                              print('Custom modal button'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                            },
                           ),
+                          const SizedBox(height: 10),
+                          FloatingActionButton(
+                            heroTag: 'modals123',
+                            child: const Icon(Icons.window),
+                            onPressed: () {
+                              this.modalsCubit.addOverlay(
+                                    CustomModal(
+                                      id: 'MultipleButtons',
+                                      title: 'Multiple buttons',
+                                      message:
+                                          'Multiple buttons\nTesting\nkjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk\nTesting kjk',
+                                      buttons: [
+                                        ThemedButton(
+                                          text: 'Confirm',
+                                          onTap: () =>
+                                              print('Custom modal button'),
+                                        ),
+                                        ThemedButton(
+                                          text: 'Reject',
+                                          onTap: () =>
+                                              print('Custom modal button'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          FloatingActionButton(
+                            heroTag: 'modals',
+                            child: const Icon(Icons.telegram),
+                            onPressed: () => DI
+                                .get<ThemeCubit>(
+                                  instanceName: 'theme',
+                                )
+                                .changeTheme(
+                                  AvailableTheme.LIGHT,
+                                ),
+                          ),
+                          const SizedBox(height: 10),
+                          FloatingActionButton(
+                            heroTag: 'themes',
+                            child: const Icon(Icons.abc_rounded),
+                            onPressed: () => DI
+                                .get<ThemeCubit>(
+                                  instanceName: 'theme',
+                                )
+                                .changeTheme(
+                                  AvailableTheme.DARK,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  Material(
+                    type: MaterialType.transparency,
+                    child: ModalsContainer(),
+                  ),
+                ],
               ),
             ),
-            Material(type: MaterialType.transparency, child: ModalsContainer()),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
