@@ -13,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
     final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
 
     return ThemedScreenWrapper(
+      contentKey: const PageStorageKey('__SETTINGS_SCREEN_WRAPPER__'),
       header: ThemedHeaderData(title: 'SETTINGS.TITLE'.tr(), pinned: true),
       children: [
         Padding(

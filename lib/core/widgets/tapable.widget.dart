@@ -15,6 +15,7 @@ class Tapable extends StatefulWidget {
   final Color? focusColor;
   final Color? hoverColor;
   final bool enableTapAnimation;
+  final bool enableStartAnimation;
   final void Function(bool)? onHover;
   final void Function(TapDownDetails)? onTapDown;
   final void Function(TapUpDetails)? onTapUp;
@@ -38,6 +39,7 @@ class Tapable extends StatefulWidget {
     this.minScale = 0.9,
     this.maxScale = 1.0,
     this.enableTapAnimation = true,
+    this.enableStartAnimation = false,
     required this.child,
     required this.onTap,
   }) : super(key: key);
@@ -79,6 +81,10 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     this._mounted = true;
+    if (!this.widget.enableStartAnimation) {
+      this._animationInController.value = 1;
+      return;
+    }
     switch (this._animationInController.status) {
       case AnimationStatus.completed:
       case AnimationStatus.dismissed:

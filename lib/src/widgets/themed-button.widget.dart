@@ -11,11 +11,13 @@ enum ButtonType { primary, secondary, disabled, reject, approve }
 
 class ThemedButton extends StatelessWidget {
   final String? text;
+  final bool enableStartAnimation;
   final TimelineSyncFunction onTap;
   final ButtonType type;
 
   const ThemedButton({
     required this.onTap,
+    this.enableStartAnimation = false,
     this.text,
     this.type = ButtonType.primary,
     Key? key,
@@ -68,6 +70,7 @@ class ThemedButton extends StatelessWidget {
       children: [
         Tapable(
           onTap: this.onTap,
+          enableStartAnimation: this.enableStartAnimation,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
             color: buttonColors['background'],

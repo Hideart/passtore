@@ -45,7 +45,7 @@ void main() async {
           supportedLocales: const [Locale('en', ''), Locale('ru', '')],
           path: 'lib/assets/translations',
           fallbackLocale: const Locale('en', ''),
-          child: PasstoreApp(),
+          child: const PasstoreApp(),
         ),
       );
     },
@@ -54,10 +54,7 @@ void main() async {
 }
 
 class PasstoreApp extends StatelessWidget {
-  late final OverlayCubit modalsCubit;
-  PasstoreApp({Key? key}) : super(key: key) {
-    this.modalsCubit = DI.get<OverlayCubit>(instanceName: 'overlays');
-  }
+  const PasstoreApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +66,9 @@ class PasstoreApp extends StatelessWidget {
         BlocProvider<StorageCubit>(
           create: (_) => DI.get<StorageCubit>(instanceName: 'safeStorage'),
         ),
+        BlocProvider<OverlayCubit>(
+          create: (_) => DI.get<OverlayCubit>(instanceName: 'overlays'),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, AppTheme>(
         builder: (context, theme) {
@@ -76,16 +76,14 @@ class PasstoreApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            theme: lightThemeData,
-            darkTheme: darkThemeData,
-            themeMode: theme.brightness == Brightness.light
-                ? ThemeMode.light
-                : ThemeMode.dark,
             home: ThemeTransition(
-              theme: theme,
+              theme: theme.brightness == Brightness.light
+                  ? lightThemeData
+                  : darkThemeData,
               offset: const Offset(250, 170),
               duration: AppMetrics.switchThemeDuration,
               child: Stack(
+                key: const PageStorageKey('123123'),
                 children: [
                   Scaffold(
                     body: SettingsScreen(),
@@ -100,7 +98,7 @@ class PasstoreApp extends StatelessWidget {
                             heroTag: 'modals',
                             child: const Icon(Icons.window),
                             onPressed: () {
-                              this.modalsCubit.addOverlay(
+                              context.read<OverlayCubit>().addOverlay(
                                     CustomModal(
                                       id: 'testModal',
                                       child: const Text('modal testing'),
@@ -113,7 +111,7 @@ class PasstoreApp extends StatelessWidget {
                             heroTag: 'modals1',
                             child: const Icon(Icons.window),
                             onPressed: () {
-                              this.modalsCubit.addOverlay(
+                              context.read<OverlayCubit>().addOverlay(
                                     CustomModal(
                                       id: 'testModal1',
                                       title: 'Test modal 1',
@@ -121,6 +119,7 @@ class PasstoreApp extends StatelessWidget {
                                       buttons: [
                                         ThemedButton(
                                           text: 'Confirm',
+                                          enableStartAnimation: true,
                                           onTap: () =>
                                               print('Custom modal button'),
                                         ),
@@ -134,7 +133,7 @@ class PasstoreApp extends StatelessWidget {
                             heroTag: 'modals123',
                             child: const Icon(Icons.window),
                             onPressed: () {
-                              this.modalsCubit.addOverlay(
+                              context.read<OverlayCubit>().addOverlay(
                                     CustomModal(
                                       id: 'MultipleButtons',
                                       title: 'Multiple buttons',
@@ -143,11 +142,13 @@ class PasstoreApp extends StatelessWidget {
                                       buttons: [
                                         ThemedButton(
                                           text: 'Confirm',
+                                          enableStartAnimation: true,
                                           onTap: () =>
                                               print('Custom modal button'),
                                         ),
                                         ThemedButton(
                                           text: 'Reject',
+                                          enableStartAnimation: true,
                                           onTap: () =>
                                               print('Custom modal button'),
                                         ),
@@ -184,7 +185,7 @@ class PasstoreApp extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Material(
+                  const Material(
                     type: MaterialType.transparency,
                     child: ModalsContainer(),
                   ),

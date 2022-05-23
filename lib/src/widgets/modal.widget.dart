@@ -76,6 +76,7 @@ class _CustomModalState extends State<CustomModal>
           ? [
               ThemedButton(
                 text: 'CLOSE'.tr(),
+                enableStartAnimation: true,
                 onTap: this.handleClose,
                 type: ButtonType.secondary,
               ),

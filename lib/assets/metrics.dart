@@ -8,5 +8,5 @@ class AppMetrics {
   static const double textSize = 16.0;
   static const double littleTextSize = 14.0;
   static const double headerExpandSize = 80.0;
-  static const Duration switchThemeDuration = Duration(milliseconds: 700);
+  static const Duration switchThemeDuration = Duration(milliseconds: 2000);
 }
