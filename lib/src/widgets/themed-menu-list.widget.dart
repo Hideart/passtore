@@ -58,6 +58,7 @@ class MenuItemsList extends StatelessWidget {
                           hoverColor: item.hoverColor,
                           splashColor: item.splashColor,
                           onTap: item.onTap,
+                          onTapDown: item.onTapDown,
                         ),
                       )
                       .toList(),

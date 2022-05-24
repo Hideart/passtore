@@ -114,11 +114,19 @@ class _ThemeTransitionState extends State<ThemeTransition>
       this.lastTheme = oldWidget.theme;
       this.isDarkNow = oldWidget.theme.brightness == Brightness.dark;
     });
-    if (widget.theme.brightness == Brightness.light) {
-      _animationController.reverse();
-    } else {
+    if (widget.theme.brightness == oldWidget.theme.brightness) {
+      _animationController.reset();
       _animationController.forward();
+    } else {
+      if (widget.theme.brightness == Brightness.light) {
+        _animationController.fling();
+        _animationController.reverse();
+      } else {
+        _animationController.reset();
+        _animationController.forward();
+      }
     }
+
     position = widget.offset;
     if (widget.radius != oldWidget.radius) {
       _updateRadius();
@@ -156,6 +164,7 @@ class _ThemeTransitionState extends State<ThemeTransition>
             key: const PageStorageKey('__THEME_ANIMATED_CHILDREN__'),
             children: !this.animationStopped
                 ? [
+                    GestureDetector(),
                     _TransitionBody(
                       child: this.widget.child,
                       themeData:

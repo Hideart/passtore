@@ -14,6 +14,7 @@ class MenuItemData {
   final Color? hoverColor;
   final Color? splashColor;
   final void Function() onTap;
+  final void Function(TapDownDetails)? onTapDown;
 
   MenuItemData(
     this.text, {
@@ -23,6 +24,7 @@ class MenuItemData {
     this.textColor,
     this.hoverColor,
     this.splashColor,
+    this.onTapDown,
     required this.onTap,
   });
 }
@@ -44,6 +46,8 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
   final Color? splashColor;
   @override
   final void Function() onTap;
+  @override
+  final void Function(TapDownDetails details)? onTapDown;
 
   final bool needSeparator;
 
@@ -58,6 +62,7 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
     this.hoverColor,
     this.splashColor,
     required this.onTap,
+    this.onTapDown,
   }) : super(key: key);
 
   @override
@@ -83,6 +88,7 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
                   right: AppMetrics.littleMargin,
                 ),
                 onTap: this.onTap,
+                onTapDown: this.onTapDown,
                 splashColor: this.splashColor,
                 hoverColor:
                     this.hoverColor ?? theme.secondaryColor.withOpacity(0.6),

@@ -72,15 +72,22 @@ class PasstoreApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, AppTheme>(
         builder: (context, theme) {
+          late final ThemeData themeData;
+          switch (theme.name) {
+            case AvailableTheme.LIGHT:
+              themeData = lightThemeData;
+              break;
+            default:
+              themeData = darkThemeData;
+              break;
+          }
           return MaterialApp(
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             home: ThemeTransition(
-              theme: theme.brightness == Brightness.light
-                  ? lightThemeData
-                  : darkThemeData,
-              offset: const Offset(250, 170),
+              theme: themeData,
+              offset: const Offset(0, 0),
               duration: AppMetrics.switchThemeDuration,
               child: Stack(
                 key: const PageStorageKey('123123'),

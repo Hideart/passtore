@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/models/theme.model.dart';
 import 'package:passtore/core/widgets/menu-item.widget.dart';
+import 'package:passtore/main.dart';
 import 'package:passtore/src/services/locator.service.dart';
 import 'package:passtore/src/services/theme.service.dart';
 import 'package:passtore/src/widgets/widgets.dart';
@@ -32,17 +33,10 @@ class SettingsScreen extends StatelessWidget {
                       color: theme.textPrimaryColor,
                     ),
                     value: 'English',
-                    onTap: () => DI
-                        .get<ThemeCubit>(
-                          instanceName: 'theme',
-                        )
-                        .changeTheme(
-                          AvailableTheme.LIGHT,
-                        ),
+                    onTap: () {},
                   ),
                   MenuItemData(
                     'Theme',
-                    hasChildren: true,
                     value: theme.name.toString(),
                     icon: Icon(
                       Icons.color_lens_outlined,
