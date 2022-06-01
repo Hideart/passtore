@@ -5,6 +5,16 @@
   },
   "CLOSE": "Close",
   "SETTINGS": {
-    "TITLE": "Settings"
+    "TITLE": "Settings",
+    "LANGUAGE": {
+      "TITLE": "Language",
+      "RU": "Russian",
+      "EN": "English"
+    },
+    "THEME": {
+      "TITLE": "Theme",
+      "LIGHT": "Light",
+      "DARK": "Dark"
+    }
   }
 }

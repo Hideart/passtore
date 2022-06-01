@@ -3,12 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/models/theme.model.dart';
 import 'package:passtore/core/widgets/menu-item.widget.dart';
-import 'package:passtore/main.dart';
 import 'package:passtore/src/services/locator.service.dart';
 import 'package:passtore/src/services/theme.service.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
+  Function() handleSwitchLanguage(BuildContext context) {
+    return () {
+      Locale nextLocale = context.locale.languageCode == 'ru'
+          ? const Locale('en')
+          : const Locale('ru');
+      context.setLocale(nextLocale);
+    };
+  }
+
+  Function() handleSwitchTheme(AppTheme theme) {
+    return () {
+      AvailableTheme nexTheme = theme.name == AvailableTheme.LIGHT
+          ? AvailableTheme.DARK
+          : AvailableTheme.LIGHT;
+      DI
+          .get<ThemeCubit>(
+            instanceName: 'theme',
+          )
+          .changeTheme(nexTheme);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
@@ -26,120 +47,28 @@ class SettingsScreen extends StatelessWidget {
               MenuItemsList(
                 items: [
                   MenuItemData(
-                    'Language',
-                    hasChildren: true,
+                    'SETTINGS.LANGUAGE.TITLE'.tr(),
                     icon: Icon(
                       Icons.language,
                       color: theme.textPrimaryColor,
                     ),
-                    value: 'English',
-                    onTap: () {},
+                    value: context.locale.languageCode == 'ru'
+                        ? 'SETTINGS.LANGUAGE.RU'.tr()
+                        : 'SETTINGS.LANGUAGE.EN'.tr(),
+                    onTap: this.handleSwitchLanguage(context),
                   ),
                   MenuItemData(
-                    'Theme',
-                    value: theme.name.toString(),
+                    'SETTINGS.THEME.TITLE'.tr(),
+                    value: theme.name.toString() == 'Light'
+                        ? 'SETTINGS.THEME.LIGHT'.tr()
+                        : 'SETTINGS.THEME.DARK'.tr(),
                     icon: Icon(
                       Icons.color_lens_outlined,
                       color: theme.textPrimaryColor,
                     ),
-                    onTap: () {
-                      switch (theme.name) {
-                        case AvailableTheme.LIGHT:
-                          DI
-                              .get<ThemeCubit>(
-                                instanceName: 'theme',
-                              )
-                              .changeTheme(
-                                AvailableTheme.DARK,
-                              );
-                          break;
-                        default:
-                          DI
-                              .get<ThemeCubit>(
-                                instanceName: 'theme',
-                              )
-                              .changeTheme(
-                                AvailableTheme.LIGHT,
-                              );
-                      }
-                    },
-                  ),
-                  MenuItemData(
-                    'Support & Donate',
-                    icon: Icon(
-                      Icons.support_agent,
-                      color: theme.textPrimaryColor,
-                    ),
-                    onTap: () {},
+                    onTap: this.handleSwitchTheme(theme),
                   ),
                 ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: AppMetrics.defaultMargin,
-                ),
-                child: MenuItemsList(
-                  title: 'Another',
-                  items: [
-                    MenuItemData(
-                      'Wipe all data',
-                      textColor: Colors.red,
-                      hoverColor: Colors.red.withOpacity(0.2),
-                      splashColor: Colors.red.withOpacity(0.2),
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        color: Colors.red,
-                      ),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: AppMetrics.defaultMargin,
-                ),
-                child: MenuItemsList(
-                  title: 'Main params',
-                  items: [
-                    MenuItemData(
-                      'Wipe all data',
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: theme.textPrimaryColor,
-                      ),
-                      onTap: () {},
-                    ),
-                    MenuItemData(
-                      'Wipe all data',
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: theme.textPrimaryColor,
-                      ),
-                      onTap: () {},
-                    ),
-                    MenuItemData(
-                      'Wipe all data',
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: theme.textPrimaryColor,
-                      ),
-                      onTap: () {},
-                    ),
-                    MenuItemData(
-                      'Wipe all data',
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: theme.textPrimaryColor,
-                      ),
-                      onTap: () {},
-                    ),
-                    MenuItemData(
-                      'Wipe all data',
-                      onTap: () {},
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
