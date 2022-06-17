@@ -87,7 +87,7 @@ class PasstoreApp extends StatelessWidget {
             locale: context.locale,
             home: ThemeTransition(
               theme: themeData,
-              offset: const Offset(0, 0),
+              offset: themeSwitcherTapPosition,
               duration: AppMetrics.switchThemeDuration,
               child: Stack(
                 key: const PageStorageKey('123123'),

@@ -114,16 +114,21 @@ class _ThemeTransitionState extends State<ThemeTransition>
       this.lastTheme = oldWidget.theme;
       this.isDarkNow = oldWidget.theme.brightness == Brightness.dark;
     });
+
     if (widget.theme.brightness == oldWidget.theme.brightness) {
-      _animationController.reset();
-      _animationController.forward();
+      this._animationController.reset();
+      this._animationController.forward();
     } else {
       if (widget.theme.brightness == Brightness.light) {
-        _animationController.fling();
-        _animationController.reverse();
+        if (!this._animationController.isAnimating) {
+          this._animationController.value = 1;
+        }
+        this._animationController.reverse();
       } else {
-        _animationController.reset();
-        _animationController.forward();
+        if (!this._animationController.isAnimating) {
+          this._animationController.reset();
+        }
+        this._animationController.forward();
       }
     }
 
@@ -164,7 +169,6 @@ class _ThemeTransitionState extends State<ThemeTransition>
             key: const PageStorageKey('__THEME_ANIMATED_CHILDREN__'),
             children: !this.animationStopped
                 ? [
-                    GestureDetector(),
                     _TransitionBody(
                       child: this.widget.child,
                       themeData:

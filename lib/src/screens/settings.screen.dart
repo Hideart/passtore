@@ -67,6 +67,7 @@ class SettingsScreen extends StatelessWidget {
                       color: theme.textPrimaryColor,
                     ),
                     onTap: this.handleSwitchTheme(theme),
+                    onTapDown: ThemeSwitcher.handleTapDown,
                   ),
                 ],
               ),

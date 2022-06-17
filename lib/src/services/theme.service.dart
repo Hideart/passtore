@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:passtore/core/extensions/extensions.dart';
 import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/core/models/theme.model.dart';
+
+Offset themeSwitcherTapPosition = const Offset(0, 0);
 
 class ThemeCubit extends HydratedCubit<AppTheme> {
   ThemeCubit([AppTheme? initialState]) : super(initialState ?? lightTheme);
@@ -33,5 +36,26 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
   @override
   Map<String, String> toJson(AppTheme state) {
     return {'currentTheme': state.name.toString()};
+  }
+}
+
+class ThemeSwitcher extends StatelessWidget {
+  final Widget child;
+  const ThemeSwitcher({Key? key, required this.child}) : super(key: key);
+
+  static void handleTapDown(TapDownDetails details) {
+    themeSwitcherTapPosition = Offset(
+      details.globalPosition.dx,
+      details.globalPosition.dy,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.deferToChild,
+      onTapDown: ThemeSwitcher.handleTapDown,
+      child: this.child,
+    );
   }
 }
