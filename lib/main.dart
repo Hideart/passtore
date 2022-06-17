@@ -8,6 +8,7 @@ import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/core/models/models.dart';
 import 'package:passtore/core/widgets/theme-transition.widget.dart';
+import 'package:passtore/src/screens/home.screen.dart';
 import 'package:passtore/src/screens/settings.screen.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 import 'package:path_provider/path_provider.dart';
@@ -82,6 +83,7 @@ class PasstoreApp extends StatelessWidget {
               break;
           }
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
@@ -90,10 +92,10 @@ class PasstoreApp extends StatelessWidget {
               offset: themeSwitcherTapPosition,
               duration: AppMetrics.switchThemeDuration,
               child: Stack(
-                key: const PageStorageKey('123123'),
+                key: const PageStorageKey('__THEME_TRANSITION_BASE__'),
                 children: [
                   Scaffold(
-                    body: SettingsScreen(),
+                    body: HomeScreen(),
                     floatingActionButton: Padding(
                       padding: const EdgeInsets.only(
                         bottom: 80,

@@ -8,11 +8,13 @@ class ThemedHeaderData {
   final String title;
   final bool collapsable;
   final bool pinned;
+  final Widget? rightContent;
 
   ThemedHeaderData({
     required this.title,
     this.collapsable = true,
     this.pinned = false,
+    this.rightContent,
   });
 }
 
@@ -20,11 +22,13 @@ class ThemedHeader extends StatelessWidget {
   final String title;
   final bool collapsable;
   final bool pinned;
+  final Widget? rightContent;
 
   const ThemedHeader({
     Key? key,
     this.collapsable = true,
     this.pinned = false,
+    this.rightContent,
     required this.title,
   }) : super(key: key);
 
@@ -45,6 +49,9 @@ class ThemedHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppMetrics.defaultMargin,
+                  ),
                   decoration: BoxDecoration(
                     color: theme.darkBackgroundColor,
                     border: Border(
@@ -59,20 +66,24 @@ class ThemedHeader extends StatelessWidget {
                     ),
                   ),
                   child: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.none,
-                    expandedTitleScale: 1.3,
-                    centerTitle: false,
-                    titlePadding: const EdgeInsets.all(
-                      AppMetrics.defaultMargin,
+                    titlePadding: const EdgeInsets.only(
+                      bottom: AppMetrics.defaultMargin,
                     ),
-                    title: ThemedText(
-                      this.title,
-                      type: ThemedTextType.primary,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: AppMetrics.titleSize,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ThemedText(
+                          this.title,
+                          type: ThemedTextType.primary,
+                          style: const TextStyle(
+                            fontSize: AppMetrics.titleSize,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          child: this.rightContent,
+                        )
+                      ],
                     ),
                   ),
                 ),

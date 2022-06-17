@@ -47,6 +47,7 @@ class _ThemedScreenWrapperState extends State<ThemedScreenWrapper> {
                         title: this.widget.header!.title,
                         pinned: this.widget.header!.pinned,
                         collapsable: this.widget.header!.collapsable,
+                        rightContent: this.widget.header!.rightContent,
                       )
                     : const SizedBox(),
                 SliverList(

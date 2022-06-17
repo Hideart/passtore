@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class Tapable extends StatefulWidget {
+class TapableProps {
   final Widget child;
   final Duration startAnimationDelay;
   final Curve? animation;
@@ -22,8 +22,7 @@ class Tapable extends StatefulWidget {
   final void Function()? onTapCancel;
   final void Function() onTap;
 
-  const Tapable({
-    Key? key,
+  const TapableProps({
     this.animation,
     this.onTapDown,
     this.onTapUp,
@@ -42,6 +41,15 @@ class Tapable extends StatefulWidget {
     this.enableStartAnimation = false,
     required this.child,
     required this.onTap,
+  });
+}
+
+class Tapable extends StatefulWidget {
+  final TapableProps properties;
+
+  const Tapable({
+    Key? key,
+    required this.properties,
   }) : super(key: key);
 
   @override
@@ -59,17 +67,17 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   );
   late final Animation<double> _animationIn = CurvedAnimation(
     parent: this._animationInController,
-    curve: this.widget.animation ?? Curves.fastLinearToSlowEaseIn,
+    curve: this.widget.properties.animation ?? Curves.fastLinearToSlowEaseIn,
   );
   late final AnimationController _tapAnimationController = AnimationController(
     vsync: this,
     duration: const Duration(
       milliseconds: 100,
     ),
-    lowerBound: 1 - this.widget.maxScale,
-    upperBound: 1 - this.widget.minScale,
+    lowerBound: 1 - this.widget.properties.maxScale,
+    upperBound: 1 - this.widget.properties.minScale,
   )..addListener(() {
-      if (!this.widget.enableTapAnimation) {
+      if (!this.widget.properties.enableTapAnimation) {
         return;
       }
       setState(() {
@@ -81,7 +89,7 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     this._mounted = true;
-    if (!this.widget.enableStartAnimation) {
+    if (!this.widget.properties.enableStartAnimation) {
       this._animationInController.value = 1;
       return;
     }
@@ -89,7 +97,7 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
       case AnimationStatus.completed:
       case AnimationStatus.dismissed:
         Timer(
-          this.widget.startAnimationDelay,
+          this.widget.properties.startAnimationDelay,
           () {
             if (this._mounted) {
               this._animationInController.forward();
@@ -118,43 +126,45 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
         child: Material(
           color: Colors.transparent,
           child: Ink(
-            decoration: this.widget.decoration,
+            decoration: this.widget.properties.decoration,
             child: InkWell(
               customBorder: RoundedRectangleBorder(
-                borderRadius: this.widget.decoration?.borderRadius ??
+                borderRadius: this.widget.properties.decoration?.borderRadius ??
                     BorderRadius.circular(0.0),
               ),
-              hoverColor: this.widget.hoverColor ?? Colors.transparent,
-              highlightColor: this.widget.highlightColor ?? Colors.transparent,
-              splashColor:
-                  this.widget.splashColor ?? Colors.grey.withOpacity(0.2),
+              hoverColor:
+                  this.widget.properties.hoverColor ?? Colors.transparent,
+              highlightColor:
+                  this.widget.properties.highlightColor ?? Colors.transparent,
+              splashColor: this.widget.properties.splashColor ??
+                  Colors.grey.withOpacity(0.2),
               onTapDown: (details) {
-                if (this.widget.enableTapAnimation) {
+                if (this.widget.properties.enableTapAnimation) {
                   this._tapAnimationController.forward();
                 }
-                if (this.widget.onTapDown != null) {
-                  this.widget.onTapDown!(details);
+                if (this.widget.properties.onTapDown != null) {
+                  this.widget.properties.onTapDown!(details);
                 }
               },
               onTapCancel: () {
-                if (this.widget.enableTapAnimation) {
+                if (this.widget.properties.enableTapAnimation) {
                   this._tapAnimationController.reverse();
                 }
-                if (this.widget.onTapCancel != null) {
-                  this.widget.onTapCancel!();
+                if (this.widget.properties.onTapCancel != null) {
+                  this.widget.properties.onTapCancel!();
                 }
               },
               onTap: () {
-                if (this.widget.enableTapAnimation) {
+                if (this.widget.properties.enableTapAnimation) {
                   this._tapAnimationController.reverse();
                 }
-                this.widget.onTap();
+                this.widget.properties.onTap();
               },
               child: Container(
-                padding: this.widget.padding,
-                child: this.widget.child,
+                padding: this.widget.properties.padding,
+                child: this.widget.properties.child,
               ),
-              onHover: this.widget.onHover,
+              onHover: this.widget.properties.onHover,
             ),
           ),
         ),

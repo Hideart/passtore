@@ -81,78 +81,80 @@ class ThemedMenuItem extends StatelessWidget implements MenuItemData {
                 left: AppMetrics.defaultMargin - AppMetrics.littleMargin,
               ),
               child: Tapable(
-                enableTapAnimation: false,
-                padding: const EdgeInsets.only(
-                  top: AppMetrics.littleMargin,
-                  bottom: AppMetrics.littleMargin,
-                  right: AppMetrics.littleMargin,
-                ),
-                onTap: this.onTap,
-                onTapDown: this.onTapDown,
-                splashColor: this.splashColor,
-                hoverColor:
-                    this.hoverColor ?? theme.secondaryColor.withOpacity(0.6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    AppMetrics.borderRadius,
+                properties: TapableProps(
+                  enableTapAnimation: false,
+                  padding: const EdgeInsets.only(
+                    top: AppMetrics.littleMargin,
+                    bottom: AppMetrics.littleMargin,
+                    right: AppMetrics.littleMargin,
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: AppMetrics.defaultMargin -
-                                AppMetrics.littleMargin,
-                            right: AppMetrics.defaultMargin,
-                          ),
-                          child: Container(
-                            width: AppMetrics.littleMargin * 2,
-                            constraints: const BoxConstraints(
-                              maxWidth: AppMetrics.littleMargin * 2,
-                            ),
-                            child: this.icon ?? const SizedBox(),
-                          ),
-                        ),
-                        ThemedText(
-                          this.text,
-                          type: ThemedTextType.primary,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: this.textColor ?? theme.textPrimaryColor,
-                          ),
-                        ),
-                      ],
+                  onTap: this.onTap,
+                  onTapDown: this.onTapDown,
+                  splashColor: this.splashColor,
+                  hoverColor:
+                      this.hoverColor ?? theme.secondaryColor.withOpacity(0.6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      AppMetrics.borderRadius,
                     ),
-                    Row(
-                      children: [
-                        this.value != null && this.value!.isNotEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                  right: AppMetrics.littleMargin / 2,
-                                ),
-                                child: ThemedText(
-                                  this.value!,
-                                  style: TextStyle(
-                                    fontSize: AppMetrics.littleTextSize,
-                                    color: theme.textPaleColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: AppMetrics.defaultMargin -
+                                  AppMetrics.littleMargin,
+                              right: AppMetrics.defaultMargin,
+                            ),
+                            child: Container(
+                              width: AppMetrics.littleMargin * 2,
+                              constraints: const BoxConstraints(
+                                maxWidth: AppMetrics.littleMargin * 2,
+                              ),
+                              child: this.icon ?? const SizedBox(),
+                            ),
+                          ),
+                          ThemedText(
+                            this.text,
+                            type: ThemedTextType.primary,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: this.textColor ?? theme.textPrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          this.value != null && this.value!.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: AppMetrics.littleMargin / 2,
                                   ),
-                                ),
-                              )
-                            : const SizedBox(),
-                        this.hasChildren
-                            ? Icon(
-                                Icons.arrow_forward_ios,
-                                color: theme.textPaleColor,
-                                size: AppMetrics.defaultMargin,
-                              )
-                            : const SizedBox(),
-                      ],
-                    )
-                  ],
+                                  child: ThemedText(
+                                    this.value!,
+                                    style: TextStyle(
+                                      fontSize: AppMetrics.littleTextSize,
+                                      color: theme.textPaleColor,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                          this.hasChildren
+                              ? Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: theme.textPaleColor,
+                                  size: AppMetrics.defaultMargin,
+                                )
+                              : const SizedBox(),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -4,6 +4,9 @@
     "SVG": "Couldn't load resource"
   },
   "CLOSE": "Close",
+  "HOME": {
+    "TITLE": "My safe"
+  },
   "SETTINGS": {
     "TITLE": "Settings",
     "LANGUAGE": {

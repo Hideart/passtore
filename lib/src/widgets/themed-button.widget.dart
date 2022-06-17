@@ -69,25 +69,27 @@ class ThemedButton extends StatelessWidget {
     return ExpandedRow(
       children: [
         Tapable(
-          onTap: this.onTap,
-          enableStartAnimation: this.enableStartAnimation,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
-            color: buttonColors['background'],
+          properties: TapableProps(
+            onTap: this.onTap,
+            enableStartAnimation: this.enableStartAnimation,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppMetrics.borderRadius),
+              color: buttonColors['background'],
+            ),
+            splashColor: buttonColors['splash'],
+            padding: const EdgeInsets.all(AppMetrics.littleMargin),
+            child: this.text != null
+                ? ThemedText(
+                    this.text!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: buttonColors['text'],
+                    ),
+                    type: ThemedTextType.primary,
+                    textAlign: TextAlign.center,
+                  )
+                : const SizedBox(),
           ),
-          splashColor: buttonColors['splash'],
-          padding: const EdgeInsets.all(AppMetrics.littleMargin),
-          child: this.text != null
-              ? ThemedText(
-                  this.text!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: buttonColors['text'],
-                  ),
-                  type: ThemedTextType.primary,
-                  textAlign: TextAlign.center,
-                )
-              : const SizedBox(),
         ),
       ],
     );
