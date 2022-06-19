@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class TapableProps {
   final Widget child;
@@ -14,6 +15,8 @@ class TapableProps {
   final Color? splashColor;
   final Color? focusColor;
   final Color? hoverColor;
+  final double? width;
+  final double? height;
   final bool enableTapAnimation;
   final bool enableStartAnimation;
   final void Function(bool)? onHover;
@@ -21,12 +24,14 @@ class TapableProps {
   final void Function(TapUpDetails)? onTapUp;
   final void Function()? onTapCancel;
   final void Function() onTap;
+  final void Function(Size tapableContainerSize)? onSizeChange;
 
   const TapableProps({
     this.animation,
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSizeChange,
     this.onHover,
     this.padding,
     this.decoration,
@@ -34,6 +39,8 @@ class TapableProps {
     this.highlightColor,
     this.focusColor,
     this.hoverColor,
+    this.width,
+    this.height,
     this.startAnimationDelay = const Duration(seconds: 0),
     this.minScale = 0.9,
     this.maxScale = 1.0,
@@ -58,8 +65,9 @@ class Tapable extends StatefulWidget {
 
 class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   double scale = 1;
-
   bool _mounted = false;
+  final GlobalKey containerKey = GlobalKey();
+  Size? lastFrameSize;
 
   late final AnimationController _animationInController = AnimationController(
     duration: const Duration(milliseconds: 300),
@@ -88,6 +96,7 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback(this.postFrameCallback);
     this._mounted = true;
     if (!this.widget.properties.enableStartAnimation) {
       this._animationInController.value = 1;
@@ -117,6 +126,22 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void postFrameCallback(Duration duration) {
+    try {
+      final BuildContext? context = this.containerKey.currentContext;
+      final Size? containerSize = context!.size;
+      print('$containerSize, $lastFrameSize');
+      if (containerSize != null && containerSize != lastFrameSize) {
+        if (this.widget.properties.onSizeChange != null) {
+          this.widget.properties.onSizeChange!(containerSize);
+        }
+        this.lastFrameSize = containerSize;
+      }
+    } catch (_) {
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaleTransition(
@@ -125,46 +150,52 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
         scale: this.scale,
         child: Material(
           color: Colors.transparent,
-          child: Ink(
-            decoration: this.widget.properties.decoration,
-            child: InkWell(
-              customBorder: RoundedRectangleBorder(
-                borderRadius: this.widget.properties.decoration?.borderRadius ??
-                    BorderRadius.circular(0.0),
+          child: SizedBox(
+            width: this.widget.properties.width,
+            height: this.widget.properties.height,
+            child: Ink(
+              key: this.containerKey,
+              decoration: this.widget.properties.decoration,
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius:
+                      this.widget.properties.decoration?.borderRadius ??
+                          BorderRadius.circular(0.0),
+                ),
+                hoverColor:
+                    this.widget.properties.hoverColor ?? Colors.transparent,
+                highlightColor:
+                    this.widget.properties.highlightColor ?? Colors.transparent,
+                splashColor: this.widget.properties.splashColor ??
+                    Colors.grey.withOpacity(0.2),
+                onTapDown: (details) {
+                  if (this.widget.properties.enableTapAnimation) {
+                    this._tapAnimationController.forward();
+                  }
+                  if (this.widget.properties.onTapDown != null) {
+                    this.widget.properties.onTapDown!(details);
+                  }
+                },
+                onTapCancel: () {
+                  if (this.widget.properties.enableTapAnimation) {
+                    this._tapAnimationController.reverse();
+                  }
+                  if (this.widget.properties.onTapCancel != null) {
+                    this.widget.properties.onTapCancel!();
+                  }
+                },
+                onTap: () {
+                  if (this.widget.properties.enableTapAnimation) {
+                    this._tapAnimationController.reverse();
+                  }
+                  this.widget.properties.onTap();
+                },
+                child: Container(
+                  padding: this.widget.properties.padding,
+                  child: this.widget.properties.child,
+                ),
+                onHover: this.widget.properties.onHover,
               ),
-              hoverColor:
-                  this.widget.properties.hoverColor ?? Colors.transparent,
-              highlightColor:
-                  this.widget.properties.highlightColor ?? Colors.transparent,
-              splashColor: this.widget.properties.splashColor ??
-                  Colors.grey.withOpacity(0.2),
-              onTapDown: (details) {
-                if (this.widget.properties.enableTapAnimation) {
-                  this._tapAnimationController.forward();
-                }
-                if (this.widget.properties.onTapDown != null) {
-                  this.widget.properties.onTapDown!(details);
-                }
-              },
-              onTapCancel: () {
-                if (this.widget.properties.enableTapAnimation) {
-                  this._tapAnimationController.reverse();
-                }
-                if (this.widget.properties.onTapCancel != null) {
-                  this.widget.properties.onTapCancel!();
-                }
-              },
-              onTap: () {
-                if (this.widget.properties.enableTapAnimation) {
-                  this._tapAnimationController.reverse();
-                }
-                this.widget.properties.onTap();
-              },
-              child: Container(
-                padding: this.widget.properties.padding,
-                child: this.widget.properties.child,
-              ),
-              onHover: this.widget.properties.onHover,
             ),
           ),
         ),

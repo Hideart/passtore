@@ -9,12 +9,18 @@ class ThemedHeaderData {
   final bool collapsable;
   final bool pinned;
   final Widget? rightContent;
+  final double? collapsedHeight;
+  final double? expandedHeight;
+  final double titleScaleFactor;
 
   ThemedHeaderData({
-    required this.title,
     this.collapsable = true,
     this.pinned = false,
     this.rightContent,
+    this.collapsedHeight,
+    this.expandedHeight,
+    this.titleScaleFactor = 1.3,
+    required this.title,
   });
 }
 
@@ -23,12 +29,18 @@ class ThemedHeader extends StatelessWidget {
   final bool collapsable;
   final bool pinned;
   final Widget? rightContent;
+  final double? collapsedHeight;
+  final double? expandedHeight;
+  final double titleScaleFactor;
 
   const ThemedHeader({
     Key? key,
     this.collapsable = true,
     this.pinned = false,
     this.rightContent,
+    this.collapsedHeight,
+    this.expandedHeight,
+    this.titleScaleFactor = 1.3,
     required this.title,
   }) : super(key: key);
 
@@ -40,7 +52,10 @@ class ThemedHeader extends StatelessWidget {
       elevation: 0,
       pinned: this.pinned,
       centerTitle: false,
-      expandedHeight: this.collapsable ? AppMetrics.headerExpandSize : null,
+      expandedHeight: this.collapsable
+          ? this.expandedHeight ?? AppMetrics.headerExpandSize
+          : null,
+      collapsedHeight: this.collapsedHeight,
       backgroundColor: Colors.transparent,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -66,9 +81,7 @@ class ThemedHeader extends StatelessWidget {
                     ),
                   ),
                   child: FlexibleSpaceBar(
-                    titlePadding: const EdgeInsets.only(
-                      bottom: AppMetrics.defaultMargin,
-                    ),
+                    expandedTitleScale: this.titleScaleFactor,
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

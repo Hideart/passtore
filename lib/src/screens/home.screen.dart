@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:passtore/assets/metrics.dart';
 import 'package:passtore/core/models/theme.model.dart';
-import 'package:passtore/core/widgets/icon-button.widget.dart';
+import 'package:passtore/core/widgets/squared-icon-button.widget.dart';
 import 'package:passtore/core/widgets/menu-item.widget.dart';
 import 'package:passtore/core/widgets/tapable.widget.dart';
 import 'package:passtore/src/widgets/widgets.dart';
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                 enableTapAnimation: false,
                 child: const Icon(
                   Icons.add,
-                  size: AppMetrics.headerSize - AppMetrics.littleMargin,
+                  size: AppMetrics.headerSize * 2,
                 ),
               ),
             ),
@@ -36,8 +36,8 @@ class HomeScreen extends StatelessWidget {
                 onTap: () => print('test1'),
                 enableTapAnimation: false,
                 child: const Icon(
-                  Icons.settings_outlined,
-                  size: AppMetrics.headerSize - AppMetrics.littleMargin,
+                  Icons.search,
+                  size: AppMetrics.headerSize,
                 ),
               ),
             ),
