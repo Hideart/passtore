@@ -130,7 +130,6 @@ class _TapableState extends State<Tapable> with TickerProviderStateMixin {
     try {
       final BuildContext? context = this.containerKey.currentContext;
       final Size? containerSize = context!.size;
-      print('$containerSize, $lastFrameSize');
       if (containerSize != null && containerSize != lastFrameSize) {
         if (this.widget.properties.onSizeChange != null) {
           this.widget.properties.onSizeChange!(containerSize);
