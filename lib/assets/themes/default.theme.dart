@@ -7,7 +7,7 @@ AppTheme lightTheme = const AppTheme(
   accentColor: Color(0xFFCBFFD4),
   accentSecondaryColor: Color(0xFF00E6C7),
   primaryColor: Colors.white,
-  secondaryColor: Color(0xFFD8D8D8),
+  secondaryColor: Color(0xFFCACACA),
   darkBackgroundColor: Color(0xFFE9E9E9),
   textPrimaryColor: Color(0xFF3F3F3F),
   textSecondaryColor: Color(0xFF6E6E6E),

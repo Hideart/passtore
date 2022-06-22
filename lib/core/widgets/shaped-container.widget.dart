@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-class SquircledContainer extends StatefulWidget {
+class ShapedContainer extends StatefulWidget {
   final EdgeInsets? padding;
   final Color color;
   final BorderSide? border;
   final double? size;
   final Widget child;
+  final Path Function(Size) shapePath;
 
-  const SquircledContainer({
+  const ShapedContainer({
     Key? key,
     this.color = Colors.transparent,
     this.border,
     this.padding,
     this.size,
+    required this.shapePath,
     required this.child,
   }) : super(key: key);
 
   @override
-  State<SquircledContainer> createState() => _SquircledContainerState();
+  State<ShapedContainer> createState() => _ShapedContainerState();
 }
 
-class _SquircledContainerState extends State<SquircledContainer> {
+class _ShapedContainerState extends State<ShapedContainer> {
   Size? contentSize;
   final GlobalKey contentKey = GlobalKey();
 
@@ -54,7 +56,10 @@ class _SquircledContainerState extends State<SquircledContainer> {
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-      clipper: _SquircleClipper(size: this.contentSize),
+      clipper: _SquircleClipper(
+        size: this.contentSize,
+        shapePath: this.widget.shapePath,
+      ),
       child: Stack(
         children: [
           Container(
@@ -68,6 +73,7 @@ class _SquircledContainerState extends State<SquircledContainer> {
                   painter: _SquirclePainter(
                     size: this.contentSize,
                     border: this.widget.border!,
+                    shapePath: this.widget.shapePath,
                   ),
                 )
               : const SizedBox(),
@@ -80,8 +86,13 @@ class _SquircledContainerState extends State<SquircledContainer> {
 class _SquirclePainter extends CustomPainter {
   final BorderSide border;
   final Size? size;
+  final Path Function(Size) shapePath;
 
-  _SquirclePainter({required this.border, this.size}) : super();
+  _SquirclePainter({
+    required this.border,
+    required this.shapePath,
+    this.size,
+  }) : super();
 
   @override
   void paint(Canvas canvas, Size canvasSize) {
@@ -97,7 +108,7 @@ class _SquirclePainter extends CustomPainter {
       localSize = Size(this.size!.width, this.size!.width);
     }
 
-    canvas.drawPath(_squiecleShape(localSize), borderFill);
+    canvas.drawPath(this.shapePath(localSize), borderFill);
   }
 
   @override
@@ -106,8 +117,12 @@ class _SquirclePainter extends CustomPainter {
 
 class _SquircleClipper extends CustomClipper<Path> {
   final Size? size;
+  final Path Function(Size) shapePath;
 
-  const _SquircleClipper({this.size}) : super();
+  const _SquircleClipper({
+    this.size,
+    required this.shapePath,
+  }) : super();
 
   @override
   Path getClip(Size size) {
@@ -115,47 +130,9 @@ class _SquircleClipper extends CustomClipper<Path> {
     if (this.size != null) {
       localSize = Size(this.size!.width, this.size!.width);
     }
-    return _squiecleShape(localSize);
+    return this.shapePath(localSize);
   }
 
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
-Path _squiecleShape(Size localSize) {
-  return Path()
-    ..moveTo(0, localSize.height / 2)
-    ..cubicTo(
-      0,
-      localSize.height * 0.08,
-      localSize.width * 0.08,
-      0,
-      localSize.width / 2,
-      0,
-    )
-    ..cubicTo(
-      localSize.width * 0.93,
-      0,
-      localSize.width,
-      localSize.height * 0.08,
-      localSize.width,
-      localSize.height / 2,
-    )
-    ..cubicTo(
-      localSize.width,
-      localSize.height * 0.93,
-      localSize.width * 0.93,
-      localSize.height,
-      localSize.width / 2,
-      localSize.height,
-    )
-    ..cubicTo(
-      localSize.width * 0.08,
-      localSize.height,
-      0,
-      localSize.height * 0.93,
-      0,
-      localSize.height / 2,
-    )
-    ..close();
 }

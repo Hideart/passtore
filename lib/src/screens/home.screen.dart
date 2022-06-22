@@ -1,34 +1,55 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:passtore/assets/metrics.dart';
+import 'package:passtore/assets/shapes/squircle.shape.dart';
 import 'package:passtore/core/models/theme.model.dart';
 import 'package:passtore/core/widgets/menu-item.widget.dart';
-import 'package:passtore/core/widgets/squircled-container.widget.dart';
+import 'package:passtore/core/widgets/shaped-container.widget.dart';
 import 'package:passtore/core/widgets/tapable.widget.dart';
+import 'package:passtore/src/services/locator.service.dart';
+import 'package:passtore/src/services/theme.service.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
+  Function() handleSwitchTheme(AppTheme theme) {
+    return () {
+      AvailableTheme nexTheme = theme.name == AvailableTheme.LIGHT
+          ? AvailableTheme.DARK
+          : AvailableTheme.LIGHT;
+      DI
+          .get<ThemeCubit>(
+            instanceName: 'theme',
+          )
+          .changeTheme(nexTheme);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
-
     return ThemedScreenWrapper(
       header: ThemedHeaderData(
         title: 'HOME.TITLE'.tr(),
+        applyBottomBorder: theme.brightness == Brightness.light,
+        pinned: true,
         rightContent: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SquircledContainer(
-              border: BorderSide(width: 1, color: theme.textPaleColor),
+            ShapedContainer(
+              border: BorderSide(width: 1, color: theme.secondaryColor),
+              shapePath: squircleShape,
               child: Tapable(
                 properties: TapableProps(
                   enableTapAnimation: false,
-                  onTap: () => print('Squircle'),
-                  padding: const EdgeInsets.all(AppMetrics.littleMargin / 2),
-                  // decoration: BoxDecoration(color: theme.primaryColor),
-                  child: const Icon(
-                    Icons.add,
-                    size: AppMetrics.headerSize,
+                  onTap: this.handleSwitchTheme(theme),
+                  onTapDown: ThemeSwitcher.handleTapDown,
+                  padding: const EdgeInsets.all(AppMetrics.littleMargin),
+                  decoration: BoxDecoration(color: theme.primaryColor),
+                  child: Icon(
+                    theme.brightness == Brightness.light
+                        ? Icons.wb_sunny_outlined
+                        : Icons.mode_night_outlined,
+                    size: AppMetrics.headerSize - AppMetrics.littleMargin / 2,
                   ),
                 ),
               ),
@@ -44,7 +65,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               MenuItemsList(
-                title: 'SETTINGS.TITLE'.tr(),
                 items: [
                   MenuItemData(
                     'SETTINGS.LANGUAGE.TITLE'.tr(),
