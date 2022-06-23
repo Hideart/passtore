@@ -103,10 +103,7 @@ class _SquirclePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeWidth = this.border.width;
 
-    Size localSize = canvasSize;
-    if (this.size != null) {
-      localSize = Size(this.size!.width, this.size!.width);
-    }
+    final Size localSize = this.size ?? canvasSize;
 
     canvas.drawPath(this.shapePath(localSize), borderFill);
   }
@@ -126,10 +123,8 @@ class _SquircleClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    Size localSize = size;
-    if (this.size != null) {
-      localSize = Size(this.size!.width, this.size!.width);
-    }
+    final Size localSize = this.size ?? size;
+
     return this.shapePath(localSize);
   }
 
