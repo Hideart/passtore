@@ -74,9 +74,7 @@ class ThemedHeader extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: theme.darkBackgroundColor.withOpacity(
-                      topped ? 1 : 0.7,
-                    ),
+                    color: Colors.transparent,
                     border: this.applyBottomBorder
                         ? Border(
                             bottom: BorderSide(
