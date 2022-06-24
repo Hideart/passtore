@@ -46,35 +46,34 @@ class ThemedHeader extends StatelessWidget {
     this.applyBottomBorder = false,
     this.collapsedHeight,
     this.expandedHeight,
-    this.titleScaleFactor = 1.3,
+    this.titleScaleFactor = 1.4,
     required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = Theme.of(context).extension<AppTheme>()!;
+    final safeArea = MediaQuery.of(context).padding;
     final double height = (this.collapsedHeight ?? AppMetrics.headerSize) +
         AppMetrics.defaultMargin * 2 +
         (this.rightContent != null ? AppMetrics.littleMargin * 2 : 0);
-    const double expandMultiplier = 1.4;
     return SliverAppBar(
       elevation: 0,
       pinned: this.pinned,
       centerTitle: false,
-      expandedHeight: height * expandMultiplier,
+      expandedHeight: height * this.titleScaleFactor,
       collapsedHeight: height,
       backgroundColor: Colors.transparent,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
-          final bool topped =
-              constraints.biggest.height == height * expandMultiplier ||
-                  !this.pinned;
+          final bool topped = constraints.biggest.height ==
+                  height * this.titleScaleFactor + safeArea.top ||
+              !this.pinned;
           return Row(
             children: [
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.transparent,
                     border: this.applyBottomBorder
                         ? Border(
                             bottom: BorderSide(

@@ -9,7 +9,6 @@ import 'package:passtore/assets/themes/themes.dart';
 import 'package:passtore/core/models/models.dart';
 import 'package:passtore/core/widgets/theme-transition.widget.dart';
 import 'package:passtore/src/screens/home.screen.dart';
-import 'package:passtore/src/screens/settings.screen.dart';
 import 'package:passtore/src/widgets/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:passtore/src/services/services.dart';

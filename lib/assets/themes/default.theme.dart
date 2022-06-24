@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:passtore/core/models/models.dart';
 
 AppTheme lightTheme = const AppTheme(
@@ -32,5 +33,6 @@ AppTheme lightTheme = const AppTheme(
 );
 
 ThemeData lightThemeData = ThemeData.light().copyWith(
+  appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
   extensions: <ThemeExtension<AppTheme>>[lightTheme],
 );

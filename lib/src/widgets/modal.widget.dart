@@ -148,67 +148,69 @@ class _CustomModalState extends State<CustomModal>
               ),
               // Modal content
               Positioned.fill(
-                child: Opacity(
-                  opacity: opacity,
-                  child: AnimatedBuilder(
-                    animation: this._modalAnimation,
-                    builder: (context, _) {
-                      List<Widget> _buttonLayout = this
-                          ._buttons
-                          .map(
-                            (btn) => Padding(
-                              padding: const EdgeInsets.only(
-                                top: AppMetrics.defaultMargin,
+                child: SafeArea(
+                  child: Opacity(
+                    opacity: opacity,
+                    child: AnimatedBuilder(
+                      animation: this._modalAnimation,
+                      builder: (context, _) {
+                        List<Widget> _buttonLayout = this
+                            ._buttons
+                            .map(
+                              (btn) => Padding(
+                                padding: const EdgeInsets.only(
+                                  top: AppMetrics.defaultMargin,
+                                ),
+                                child: btn,
                               ),
-                              child: btn,
-                            ),
-                          )
-                          .toList();
-                      if (this._buttons.length == 2) {
-                        _buttonLayout = [
-                          ExpandedRow(
-                            children: [
-                              ...this
-                                  ._buttons
-                                  .map(
-                                    (btn) => Padding(
-                                      padding: EdgeInsets.only(
-                                        top: AppMetrics.defaultMargin,
-                                        right: btn != this._buttons.last
-                                            ? AppMetrics.defaultMargin / 2
-                                            : 0.0,
-                                        left: btn == this._buttons.last
-                                            ? AppMetrics.defaultMargin / 2
-                                            : 0.0,
+                            )
+                            .toList();
+                        if (this._buttons.length == 2) {
+                          _buttonLayout = [
+                            ExpandedRow(
+                              children: [
+                                ...this
+                                    ._buttons
+                                    .map(
+                                      (btn) => Padding(
+                                        padding: EdgeInsets.only(
+                                          top: AppMetrics.defaultMargin,
+                                          right: btn != this._buttons.last
+                                              ? AppMetrics.defaultMargin / 2
+                                              : 0.0,
+                                          left: btn == this._buttons.last
+                                              ? AppMetrics.defaultMargin / 2
+                                              : 0.0,
+                                        ),
+                                        child: btn,
                                       ),
-                                      child: btn,
-                                    ),
-                                  )
-                                  .toList()
-                            ],
-                          )
-                        ];
-                      }
-                      return FractionalTranslation(
-                        translation:
-                            Offset(0.0, 1 - this._modalAnimation.value),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.all(AppMetrics.defaultMargin),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ThemedModalContent(
-                                title: this.widget.title,
-                                message: this.widget.message,
-                                child: this.widget.child,
-                              ),
-                              ..._buttonLayout.map((btn) => btn).toList(),
-                            ],
+                                    )
+                                    .toList()
+                              ],
+                            )
+                          ];
+                        }
+                        return FractionalTranslation(
+                          translation:
+                              Offset(0.0, 1 - this._modalAnimation.value),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.all(AppMetrics.defaultMargin),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ThemedModalContent(
+                                  title: this.widget.title,
+                                  message: this.widget.message,
+                                  child: this.widget.child,
+                                ),
+                                ..._buttonLayout.map((btn) => btn).toList(),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

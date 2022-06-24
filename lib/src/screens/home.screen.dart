@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
     return ThemedScreenWrapper(
       header: ThemedHeaderData(
         title: 'HOME.TITLE'.tr(),
-        applyBottomBorder: theme.brightness == Brightness.light,
+        applyBottomBorder: true,
         pinned: true,
         rightContent: Row(
           mainAxisAlignment: MainAxisAlignment.end,
